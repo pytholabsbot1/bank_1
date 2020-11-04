@@ -1,0 +1,267 @@
+<!--  ************* New Deposit form *******************************-->
+<!-- **********When client wants to deposit money first time ************-->
+
+<!--
+      Accessing URL   : /bank/search/deposit_form/
+      view function   : deposit_form
+      namespace       :  deposit_form
+
+-->
+
+{% load static%}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+{% block style %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'accounts/css/crispy.css' %}">
+{% endblock %}
+{% block js%}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+{% endblock %}
+  <div class="container">
+<form method="POST" action="deposit_save/" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <div class="form-vertical">
+    	<legend class="border-bottom mb-4">
+          Deposit
+        </legend>
+      
+      <div class="form-row">
+          <div class="form-group col-md-4 col-sm-6 mb-0">
+            {{ deposit_form.serial_number|as_crispy_field }}
+          </div>
+          <div class="form-group col-md-4 col-sm-6 mb-0">
+            {{ deposit_form.nomination_number|as_crispy_field }}
+          </div>
+          <div class="form-group col-md-4 col-sm-6 mb-0">
+            {{ deposit_form.entry_date|as_crispy_field }}
+          </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4 col-sm-6 mb-0">
+              {{ deposit_form.society_account_number|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 col-sm-6 mb-0">
+              {{ deposit_form.client_bank_account_number|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 col-sm-6 mb-0">
+              {{ deposit_form.client_bank|as_crispy_field }}
+            </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-group col-md-4 col-sm-6 mb-0">
+                {{ deposit_form.branch_name|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-4 col-sm-6 mb-0">
+                {{ deposit_form.account_opening_date|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-4 col-sm-6 mb-0">
+                {{ deposit_form.account_opening_amount|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-4 col-sm-6 mb-0">
+                  {{ deposit_form.scheme_name|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 col-sm-6 mb-0">
+                  {{ deposit_form.scheme_duration|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 col-sm-6 mb-0">
+                  {{ deposit_form.duration_type|as_crispy_field }}
+                </div>
+              </div>
+
+              <div class="form-row">
+                  <div class="form-group col-md-4 col-sm-6 mb-0">
+                    {{ deposit_form.scheme_intrest|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-md-4 col-sm-6 mb-0">
+                    
+                    {{deposit_form.account_holder_first_name|as_crispy_field}}
+                  </div>
+                  <div class="form-group col-md-4 col-sm-6 mb-0">
+                    {{ deposit_form.account_holder_last_name|as_crispy_field }}
+                  </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4 col-sm-6 mb-0">
+                      {{ deposit_form.age|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 mb-0">
+                      {{ deposit_form.gender|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 mb-0">
+                      {{ deposit_form.father_name|as_crispy_field }}
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                      <div class="form-group col-md-4 col-sm-6 mb-0">
+                        {{ deposit_form.mother_name|as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-4 col-sm-6 mb-0">
+                        {{ deposit_form.date_of_birth|as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-4 col-sm-6 mb-0">
+                        {{ deposit_form.current_address|as_crispy_field }}
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4 col-sm-6 mb-0">
+                          {{ deposit_form.village|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-4 col-sm-6 mb-0">
+                          {{ deposit_form.area|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-4 col-sm-6 mb-0">
+                          {{ deposit_form.city|as_crispy_field }}
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                          <div class="form-group col-md-4 col-sm-6 mb-0">
+                            {{ deposit_form.district|as_crispy_field }}
+                          </div>
+                          <div class="form-group col-md-4 col-sm-6 mb-0">
+                            {{ deposit_form.state|as_crispy_field }}
+                          </div>
+                          <div class="form-group col-md-4 col-sm-6 mb-0">
+                            {{ deposit_form.pincode|as_crispy_field }}
+                          </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-4 col-sm-6 mb-0">
+                              {{ deposit_form.country|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-4 col-sm-6 mb-0">
+                              {{ deposit_form.email_id|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-4 col-sm-6 mb-0">
+                              {{ deposit_form.employee_name|as_crispy_field }}
+                            </div>
+                          </div>
+
+                          <div class="form-row">
+                              <div class="form-group col-md-4 col-sm-6 mb-0">
+                                {{ deposit_form.mobile_number_1|as_crispy_field }}
+                              </div>
+                              <div class="form-group col-md-4 col-sm-6 mb-0">
+                                {{ deposit_form.mobile_number_2|as_crispy_field }}
+                              </div>
+                              <div class="form-group col-md-4 col-sm-6 mb-0">
+                                {{ deposit_form.landline_number|as_crispy_field }}
+                              </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-4 col-sm-6 mb-0">
+                                  {{ deposit_form.account_nominee_name|as_crispy_field }}
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6 mb-0">
+                                  {{ deposit_form.nominee_relation|as_crispy_field }}
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6 mb-0">
+                                  {{ deposit_form.id_number|as_crispy_field }}
+                                </div>
+                              </div>
+
+                              <div class="form-row">
+                                  <div class="form-group col-md-4 col-sm-6 mb-0">
+                                    {{ deposit_form.category|as_crispy_field }}
+                                  </div>
+                                  <div class="form-group col-md-4 col-sm-6 mb-0">
+                                    {{ deposit_form.counter_number|as_crispy_field }}
+                                  </div>
+                                  <div class="form-group col-md-4 col-sm-6 mb-0">
+                                    {{ deposit_form.guardian_name|as_crispy_field }}
+                                  </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-4 col-sm-6 mb-0">
+                                      {{ deposit_form.guardian_relation|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 mb-0">
+                                      {{ deposit_form.guardian_address|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 mb-0">
+                                      {{ deposit_form.id_type|as_crispy_field }}
+                                    </div>
+                                  </div>
+
+                                  <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ deposit_form.maturity_date|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ deposit_form.permanent_address|as_crispy_field }}
+                                    </div>
+                                  </div>
+
+                                  <div class="form-row">
+                                      <div class="form-group col-md-6 col-sm-6 mb-0">
+                                        {{ deposit_form.account_holder_photograph|as_crispy_field }}
+                                      </div>
+                                     
+                                      <div class="form-group col-md-6 col-sm-6 mb-0">
+                                        {{ deposit_form.account_holder_signature|as_crispy_field }}
+                                      </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                      <div class="form-group col-md-6 col-sm-6 mb-0">
+                                        {{ deposit_form.id_photograph1|as_crispy_field }}
+                                      </div>
+                                      <div class="form-group col-md-6 col-sm-6 mb-0">
+                                        {{ deposit_form.id_photograph2|as_crispy_field }}
+                                      </div>
+                                      
+                                    </div>
+
+                                    <div class="form-row">
+                                      <div class="form-group col-md-6 col-sm-6 mb-0">
+                                        {{ deposit_form.id_photograph3|as_crispy_field }}
+                                      </div>
+                                      <div class="form-group col-md-6 col-sm-6 mb-0">
+                                        {{ deposit_form.id_photograph4|as_crispy_field }}
+                                      </div>
+                                      
+                                    </div>
+
+                                    
+                                      
+                                    </div>
+                                                                                                            
+                                      <div class="form-row">
+                                          <div class="form-group col-md-12 mb-0">
+                                              {{ deposit_form.minor_checkbox|as_crispy_field }}
+                                          </div>
+                                        </div>
+                                      <div class="form-row">
+                                          <div class="form-group col-md-12 mb-0">
+                                            {{ deposit_form.remarks|as_crispy_field }}
+                                          </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                          <div class="form-group col-md-12 mb-0">
+                                              <button class="btn btn-outline-info" type="submit">
+                                                  Save 
+                                                </button>
+                                          </div>
+                                          </div>
+
+    </div>
+</form>
+</div>
+{% endblock %}

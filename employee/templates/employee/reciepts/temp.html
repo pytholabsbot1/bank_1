@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        
+    .container{
+        text-align: center;
+        margin: 10px;
+        border: 1px solid;
+        border-radius: 22px;
+        width: 38%;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container"> 
+        <div class="images">
+            <img src="{{ photo }}" alt="" style='width: 40%;' id="qr">
+            <img src="{{ id_num_url }}" alt="" style="width: 40%;">
+        </div>
+
+        <p> <strong> {{ id_tp }} ID: {{ id_num }} </strong></p>
+
+        <p>Type : {{ type }}</p>
+
+
+        <div style="text-align: left; padding-left: 20px;line-height: 5px;">
+            
+            {% for head , val in primary_info.items %}
+
+                <p> <strong> {{ head }} : </strong> {{ val|safe }}</p>
+
+            {% endfor %}
+        </div>
+        
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div style="text-align: center;">
+
+        <p>Select DataBase</p>
+
+        <div style="border: 1px solid black;;width: 100px;padding: 10px;margin: auto;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="submit" name="db_type" value="Default" />
+            </form>
+        </div>
+
+        <div style="float: center;border: 1px solid black;;
+width: 70%;
+padding: 10px;
+margin-left: auto;margin-right: auto;margin-top: 30px;">
+
+           <form action="" method="post">
+            {% csrf_token %}
+            <input type="submit" name="db_type" value="Dummy" />
+        </form>
+
+            {% for d in backups %}
+               <p> <a href="">{{d}}</a> </p> 
+            {% endfor %}
+
+        </div>
+
+    </div>
+    
+</body>
+</html>

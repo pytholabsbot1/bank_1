@@ -1,0 +1,255 @@
+{% block table_part %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+<div class="card" style="border-radius: 20px;margin: 30px;margin-top: -10px;"> 
+    
+    {% if p_img %}
+    <img src="{{ p_img }}" alt="" style="height: 100px;width: 100px;margin-left: 25px;"> {% endif %}
+
+    <div class="card-body"><h5 class="card-title">{{ title |safe  }}</h5>
+        
+        <table class="mb-0 table table-hover" id="report-table">
+            <thead>
+            <tr>
+                {% for head in headers %}
+                    <th> {{ head }} </th>
+                {% endfor %}
+            </tr>
+            </thead>
+           
+            <tbody>
+                
+                {% for row in rows %}
+                <tr> 
+                    {% autoescape off %}
+                    {% for el in row %}
+                    <td> {{ el }} </td>
+                    {% endfor %}
+{% endautoescape %}
+
+                </tr>
+                {% endfor %}
+                
+                <!-- Ledger Part -->
+                {% if ledger %}
+                
+                    {% for acc_details , withdraw_details in ledger.items %}
+                        
+                    <tr> 
+                        <td> <a href="/admin/employee/deposits_table/?q={{ acc_details.0 }}">{{ acc_details.0 }}</a> </td>
+                        {% for el in acc_details|slice:"1:" %}
+                        <td> {{ el }} </td>
+                        {% endfor %}
+                    </tr> 
+
+                    {% if withdraw_details %}
+                    <tr style="background: rgb(213, 213, 213);"> 
+                        <td> <a href="/admin/employee/withdrawl_entry/">{{ acc_details.0 }}</a> </td>
+                        {% for el in withdraw_details %}
+                        <td> {{ el }} </td>
+                        {% endfor %}
+                    </tr> 
+                    {% endif %}
+
+
+                    {% endfor %}
+                {% endif %}
+
+                <!-- CASHBOOK PART -->
+                {% if cashbook %}
+                
+                <!-- Opening Balance -->
+                <tr style="height: 80px;border-top: 5px solid;">
+                    <td>{{ Opening.1 }}</td>
+                    <td style="color: red;"> <b>Opening Balance</b> </td>
+                    <td style="color: red;">{{ Opening.0 }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>  
+                    <td></td>
+                    <td></td>
+                    <td></td>  
+                    <td></td>
+                    <td></td>  
+                    <td></td>
+                    <td></td>
+                    <td></td>  
+                </tr>
+
+                <!-- <All other transactions> -->
+                    
+                {% for date , day_rows in cashbook %}
+
+                    {% for row in day_rows.rows %}
+                        
+                        <tr>
+                        {% for el in row %}
+
+                            {% if forloop.counter > 8 %}
+                                <td style="background: rgb(213, 213, 213);" > {{ el }} </td>
+                            {% else %}
+                                <td> {{ el }} </td>
+                            {% endif %}
+
+                        {% endfor %}
+                        </tr>
+
+                    {% endfor %}
+
+                    <tr style="height: 60px;border-top: 2px solid;">
+                        <td></td>
+                        <td> </td>
+                        <td></td>
+                        <td><b>Total :</b> </td>
+                        <td> <b> {{ day_rows.c_total }} </b> </td>
+                        <td></td>  
+                        <td></td>
+                        <td></td>
+                        <td></td>  
+                        <td></td>
+                        <td><b>Total :</b> </td>
+                        <td> <b> {{ day_rows.d_total }} </b> </td>
+                        <td></td>
+                        <td></td>  
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr style="height: 80px;border-top: 5px solid">
+                        <td>{{ date }}</td>
+                        <td style="color: red;"> <b>Closing Balance</b> </td>
+                        <td style="color: red;">{{ day_rows.closing }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>  
+                        <td></td>
+                        <td></td>
+                        <td></td>  
+                        <td></td>
+                        <td></td>  
+                        <td></td>
+                        <td></td>
+                        <td></td>  
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <!-- Closing Balance -->
+                {% endfor %}
+
+                {% endif %}
+                <!-- CASHBOOK PART  /////// -->
+
+
+
+
+
+                  <!-- CAHS TRANSACTIONS PART -->
+                  {% if cash_transact %}
+
+
+                        <!-- Opening Balance -->
+                    <tr style="height: 80px;border-top: 5px solid;">
+                        <td>{{ Opening.1 }}</td>
+                        <td style="color: red;"> <b>Opening Balance</b> </td>
+                        <td></td>
+                        <td></td>
+                        {% for i in Opening.0  %}
+                        <td style="color: red;">{{ i }}</td>
+
+                        {% endfor %}
+                    </tr>
+
+                
+                  <!-- <All other transactions> -->
+                      
+                  {% for date , day_rows in cash_transact.items %}
+  
+                      {% for row in day_rows.rows %}                       
+                          <tr>
+                          {% for el in row %}
+  
+                              {% if forloop.counter > 12 %}
+                                  <td style="background: rgb(213, 213, 213);" > {{ el }} </td>
+                              {% else %}
+                                  <td> {{ el }} </td>
+                              {% endif %}
+  
+                          {% endfor %}
+                          </tr>
+  
+                      {% endfor %}
+  
+                      <tr style="height: 60px;border-top: 2px solid;">
+                          <td></td>
+                          <td> </td>
+                          <td></td>
+                          <td><b>Total :</b> </td>
+                          {% for d_tot in day_rows.d_tots %}
+                            <td> {{ d_tot }} </td>
+                          {% endfor %}
+
+                          <td></td>
+                          <td> </td>
+                          <td></td>
+                          <td><b>Total :</b> </td>
+                          {% for c_tot in day_rows.c_tots %}
+                            <td> {{ c_tot }} </td>
+                          {% endfor %}
+
+                      </tr>
+  
+                      <tr style="height: 80px;border-top: 5px solid">
+                          <td>{{ date }}</td>
+                          <td style="color: red;"> <b>Closing Balance</b> </td>
+                          <td style="color: red;">{{ day_rows.closing }}</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>  
+                          <td></td>
+                          <td></td>
+                          <td></td>  
+                          <td></td>
+                          <td></td>  
+                          <td></td>
+                          <td></td>
+                          <td></td>  
+                          <td></td>
+                          <td></td>
+                      </tr>
+  
+                      <!-- Closing Balance -->
+                  {% endfor %}
+  
+                  {% endif %}
+                  <!-- CASHBOOK PART  /////// -->
+  
+  
+
+
+
+                <!-- Client Report PART START -->
+
+                {%  for row in records %}
+                    
+                <tr>
+                    {% for el in row %}    
+                        <td> {{ el }} </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+
+                
+        </tbody></table>
+        <br><br>
+      
+    </div>
+    
+</div>
+
+{% endblock %}
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready( function () {
+    $('#report-table').DataTable();
+} );
+</script>

@@ -1,0 +1,172 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <title>Profit Loss Report</title>
+    <style>
+.spinner {
+  width: 70px;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 7px;
+  height: 7px;
+  background-color: white;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+    </style>
+  </head>
+  <body style="background-color: rgb(216, 240, 250);">
+  <div class="row">
+    <div class="col-4">
+    <div class="form-area bg-dark text-white rounded-lg mt-5 ml-1 p-4">
+    <h1>Profit Loss Report</h1>
+    <div class="messages my-3">
+        {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{message.tags}}" role="alert">
+                        {{message}}
+                    </div>
+                {% endfor %}
+        {% endif %}
+    </div>
+    <div>
+        <a onClick="window.location.reload(true);" class="btn btn-danger">Reset</a>
+        <a href="/bank/" class="btn btn-info">Dashboard</a>
+    </div>
+
+    <div class="w-75 bg-white my-3" style="height: 2px;"></div>
+
+    
+    <form action="" method="POST">
+        {% csrf_token %}
+            <div class="input-group w-50">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">From date:</span>
+                </div>
+                <input type="date" name="from" aria-label="From Date" class="form-control">
+            </div>
+            <div class="input-group w-50 my-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">To date:</span>
+                </div>
+                <input type="date" name="to" aria-label="To Date" class="form-control">
+            </div>
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+
+
+    </div>
+    </div>
+
+    <div class="col-8">
+        <div class="report container bg-white my-4 rounded">
+            <h3>Profit Loss Statement {{from_date}} - {{to_date}} </h3>
+
+        <div class="row">
+            <div class="col-6">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead class="thead-dark">
+                        <tr class='text-center'>
+                            <th colspan="2" class="bg-warning">Loss</th>
+                        </tr>
+                    </thead>
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Description</th>
+                            <th scope="col">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="lossd">Otto</td>
+                            <td class="lossa">@mdo</td>
+                        </tr>
+
+                        <tr class="total bg-info">
+                            <td class="totalloss">Total Amount</td>
+                            <td class="totallossa">{{total_loss}}</td>
+                        </tr>
+                    </tbody>
+                    </table>
+            </div>
+            <div class="col-6">
+                <table class="table table-bordered table-hover table-striped">
+                <thead class="thead-dark">
+                    <tr class='text-center'>
+                        <th colspan="2" class="bg-success">Profit</th>
+                    </tr>
+                </thead>
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Description</th>
+                        <th scope="col">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="profitd">data</td>
+                        <td class="profita">Mark</td>
+                    </tr>
+
+                    <tr class="total bg-info">
+                        <td class="totalprofit">Total Amount</td>
+                        <td class="totalprofita">{{total_profit}}</td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+
+
+            
+        </div>
+    </div>
+</div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="{% static 'employee/printdocs.js' %}"></script>
+  </body> 
+</html>

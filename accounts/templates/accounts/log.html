@@ -1,0 +1,32 @@
+
+{% extends "accounts/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+        <div class="content-section">
+            <center><img width="200" src="/media/users/logo.jpg" alt="logo"></center>
+                <div style="font-size: 20px; font-weight: 600; letter-spacing: 3px;"><center>Siddhi Credit Cooperative Society </center></div> <!--Header-->
+            
+                <form method="POST">
+                   
+                    {% csrf_token %}
+                     <div>
+                        <center><legend>{{ header }}</legend></center>
+                    </div>
+                    <fieldset class="form-group">
+
+                        <legend class="border-bottom mb-4">{{ title }}</legend>
+                        {{ form|crispy }}  <!--login form -->
+                    </fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-outline-info" type="submit">{{ title }}</button>
+                    </div>
+
+                </form>
+                
+            
+        
+        </div>
+{% endblock %}
+

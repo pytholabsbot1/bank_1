@@ -1,0 +1,228 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <title>Uploaded Documents</title>
+    <style>
+.spinner {
+  width: 70px;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 7px;
+  height: 7px;
+  background-color: white;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+    </style>
+  </head>
+  <body style="background-color: rgb(216, 240, 250);">
+    <div class="form-area bg-dark text-white rounded-lg mt-5 w-50 ml-5 p-4 pl-5">
+    <h1>Uploaded Documents</h1>
+    <div class="messages my-3">
+        {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{message.tags}}" role="alert">
+                        {{message}}
+                    </div>
+                {% endfor %}
+        {% endif %}
+    </div>
+    <div>
+        <a onClick="window.location.reload(true);" class="btn btn-danger">Reset</a>
+        <a href="/bank/" class="btn btn-info">Dashboard</a>
+    </div>
+
+    <div class="w-75 bg-white my-3" style="height: 2px;"></div>
+
+    
+    <form action="" method="POST">
+    {% csrf_token %}
+        <h5>Select Type:</h5>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="type" id="account" value="account">
+            <label class="form-check-label" for="account">Clients</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="type" id="emp" value="employee">
+            <label class="form-check-label" for="emp">Employee</label>
+        </div>
+        <div class="dates my-2">
+            <div class="mt-2">
+                From: <input type="date" name="from">
+            </div>
+            <div class="mt-2">
+                To: <input type="date" name="to">
+            </div>
+        </div>
+        <div id="account-type" class="my-4">
+            <h5>
+                Select Account Type:
+            </h5>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="actype" id="loan-ac" value="loan">
+                <label class="form-check-label" for="account">Loan</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="actype" id="dep-ac" value="deposit">
+                <label class="form-check-label" for="emp">Deposit</label>
+            </div>
+        </div>
+        <div id="account-select" class="my-3">
+            <h6>Search or select account:</h6>
+            <select id="acc_search" name="acc" style="width:300px">
+                <option value="none" selected disabled hidden> 
+                    Select Account
+                </option> 
+            </select>
+        </div>
+        <div id="submit">
+            <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="extra" value="all" id="allcheck">
+                <label class="form-check-label" for="allcheck">
+                    All
+                </label>
+            </div>
+            <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="extra" value="db" id="dbcheck">
+                <label class="form-check-label" for="dbcheck">
+                    -
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </div>
+    </form>
+    </div>
+
+{% if dlist %}
+
+
+<table class="mb-0 table table-hover mt-3" id="accounts-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Account Number</th>
+                        <th scope="col">Application Date</th>
+                        <th scope="col">Submitted Documents</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for a in data %}
+                    <tr>
+                        <td>{{a.fc.loan_account_number}} {{a.fc.society_account_number}}</td>
+                        <td>{{a.fc.account_opening_date}} {{a.fc.applied_date}} </td>
+                        <td>
+                            <ul>
+                            {% for d in a.docs %}
+                            <li>
+                                <a href="{% get_media_prefix %}{{d.doc}}" download>
+                                    {{d.TYPE}}
+                                </a>
+                                ({{d.date}})
+                            </li>
+                            {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+    </table>
+{% endif %}
+
+{% if dates %}
+<table class="mb-0 table table-hover mt-3" id="cash-table">
+        <thead>
+            <tr>
+                <th scope="col">Employee</th>
+                {% for date in dates %}
+                    <th scope="col">
+                        {{date.0}}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+                {% for emp in empdoc %}
+                    <tr>
+                        <td>{{emp.emp}}</td>
+                        {% for doc in emp.docdata %}
+                            <td>
+                                {% if doc.docs %}
+                                <ul>
+                                    {% for d in doc.docs %}
+                                        <li>
+                                            <a href="{% get_media_prefix %}{{d.doc}}" download>
+                                                Download
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                No Document
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+
+{% endif %}
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="{% static 'employee/updocsrep.js' %}"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready( function () {
+    $('#accounts-table').DataTable();
+
+} );
+    $(document).ready( function () {
+    $('#cash-table').DataTable();
+
+} );
+</script>
+  </body>
+</html>

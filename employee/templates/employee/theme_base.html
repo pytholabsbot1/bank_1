@@ -1,0 +1,570 @@
+{% load static %}
+<!DOCTYPE html>
+<!-- saved from url=(0065)file:///G:/architectui-html-free/architectui-html-free/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    
+    
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="msapplication-tap-highlight" content="no">
+    {% block style %}
+
+    {% endblock %}
+<link href="{% static 'employee/main.css'%}" rel="stylesheet"><style type="text/css">/* Chart.js */
+@-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}</style>
+
+
+
+ <style>
+
+
+@media (max-width: 991.98px){
+    .header-menu{
+        overflow: scroll !important;
+        height: 77px !important;
+        padding: 10px !important;
+        padding-right: 150px !important;
+        display: inherit !important;
+    }
+}
+
+nav ul{height:200px; width:80%;}
+nav li{margin-bottom: 10px;}
+nav ul{overflow:hidden; overflow-y:scroll;}
+ 
+.card{
+    border-radius: 15px;
+    padding: 10px;  
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+</style>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        <div class="app-header header-shadow">
+            <div class="app-header__logo">
+                <div style="font-size: 20px;font-weight: 600;"> Siddhi Cooperative Society</div>
+                <div class="header__pane ml-auto">
+                    
+                </div>
+            </div>
+            
+            <div class="app-header__menu">
+                <span>
+                    <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                        <span class="btn-icon-wrapper">
+                            <i class="fa fa-ellipsis-v fa-w-6"></i>
+                        </span>
+                    </button>
+                </span>
+            </div>    
+            
+            <div class="app-header__content">
+                <div class="app-header-left">
+                  
+                    <ul class="header-menu nav" >
+
+                        <!-- ##Verify Membership Certificate -->
+                        <li><a href="/admin/employee/uploaddocs/add" class="nav-link">
+                            <i class="nav-link-icon fa fa-database"> </i>
+                            Upload
+                        </a></li>
+                        
+
+                       {% if "admin" in user.username or "cashier" in user.username %}
+
+
+                       <!-- Reports Section For admin -->
+                       <li class="nav-item">
+                        <span class = "nav-link-icon fa fa-database" style="color:#B5BCC3;"></span>
+                        <button class="btn .btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Reports
+                          </button>
+                          <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                           
+                            <li class="dropdown-submenu">
+                                <a  class="dropdown-item" tabindex="-1" href="#">
+                                   Client Wise
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item">
+                                        <a href="/bank/report/ClientCollection_dp" class="nav-link">
+                                            <i class="nav-link-icon fa fa-database"> </i>
+                                            Deposit Collection
+                                        </a>
+                                    </li>
+
+                                    <li class="dropdown-item">
+                                        <a href="/bank/report/ClientCollection_fc" class="nav-link">
+                                            <i class="nav-link-icon fa fa-database"> </i>
+                                            EMI Collection
+                                        </a>
+                                    </li>
+                                  
+                                </ul>
+                            </li>
+                            
+                            <li class="dropdown-submenu">
+                                <a  class="dropdown-item" tabindex="-1" href="#">
+                                   Agent Wise
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item">
+                                        <a href="/bank/report/AgentCollection_dp" class="nav-link">
+                                            <i class="nav-link-icon fa fa-database"> </i>
+                                            Deposit Collection
+                                        </a>
+                                    </li>
+
+                                    <li class="dropdown-item">
+                                        <a href="/bank/report/AgentCollection_fc" class="nav-link">
+                                            <i class="nav-link-icon fa fa-database"> </i>
+                                            EMI Collection
+                                        </a>
+                                    </li>
+                                  
+                                </ul>
+                            </li>
+                        
+                            <a href="/bank/report/withdrawls" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Withdrawls
+                            </a>
+                            
+                            <a href="/bank/report/loans" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Loans - Penalty
+                            </a>
+                 
+                            <a href="/bank/report/maturity" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Maturity
+                            </a>
+
+                            <a href="/bank/report/emi_due" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                EMI DUE
+                            </a>
+
+                            <a href="/bank/report/daily_report_dp" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                               Daily Print CASH
+                            </a>
+
+                            <a href="/bank/report/daily_report_fc" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Daily Print FINANCE
+                            </a>
+
+                            <a href="/bank/report/document_dispatch" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Document Dispatch
+                            </a>
+                            <a href="/bank/report/daily_cash" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Daily Cash Submit
+                            </a>
+                            <a href="/bank/report/upcoming_maturity" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Upcoming Maturity
+                            </a>
+
+                            <a href="/bank/report/account_status" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Account Status
+                            </a>
+
+                            <a href="{% url 'printdocs' %}" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Print Documents
+                            </a>
+
+                        </ul></li>
+                      
+                       <!-- Employee section for admin header -->
+                        <li class="nav-item">
+                            <span class = "nav-link-icon fa fa-database" style="color:#B5BCC3;"></span>
+                            <button class="btn .btn-default  dropdown-toggle" type="button" data-toggle="dropdown">Employee</button>
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+
+                                <li><a href="/admin/employee/employee_interview/" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Explore
+                                </a></li>
+
+                                <li><a href="/admin/auth/user" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Manage Users
+                                </a></li>
+
+                              <li><a href="/admin/employee/employee_interview/add/" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Employee Interview
+                            </a></li>
+                              <li><a href="/admin/employee/employee_joining/add/" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Create Employee
+                            </a></li>
+
+                            <li><a href="/admin/employee/employee_joining" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Change Employee
+                            </a></li>
+                             
+                            </ul>
+                        </li>
+
+
+                        <!-- PART FOR EXPLORE  SECTIOON IN ADMIN PANEL -->
+                            <li class="nav-item">
+                            <span class = "nav-link-icon fa fa-database" style="color:#B5BCC3;"></span>
+                            <button class="btn .btn-default  dropdown-toggle" type="button" data-toggle="dropdown">Explore</button>
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+
+                                <li><a href="/admin/employee/approved_finance_table/" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Loan Approvals
+                                </a></li>
+
+                                <li><a href="/admin/employee/finance_table/" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Finances
+                                </a></li>
+
+                                <li><a href="/admin/employee/deposits_table" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Deposits 
+                                </a></li>
+
+                                <li><a href="/admin/employee/client" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Clients 
+                                </a></li>
+
+                                <li><a href="/admin/employee/gaurantor" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Gaurantors 
+                                </a></li>
+
+                                <li><a href="/admin/employee/withdrawl_entry/" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Withdrawls
+
+                            </a></li>
+                                <li><a href="/admin/employee/cash_collection/" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                    Cash Collections
+                                </a></li>
+                                
+                                <li><a href="/admin/employee/collection_deposit/" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                        Deposit Collections
+                                    </a></li>
+                                
+                                <li><a href="/admin/employee/collection_finance/" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                        Finance Collections
+                                    </a></li>
+                                    
+                            </ul>
+                        </li>
+
+
+                        <!-- PART FOR Accounts  SECTIOON IN ADMIN PANEL -->
+                        <li class="nav-item">
+                            <span class = "nav-link-icon fa fa-database" style="color:#B5BCC3;"></span>
+                            <button class="btn .btn-default  dropdown-toggle" type="button" data-toggle="dropdown">Accounts</button>
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+
+                                <li><a href="/bank/report/ledger" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Ledger
+                                </a></li>
+
+                                <li><a href="/bank/report/cashbook" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Cashbook 
+                                </a></li>
+                                <li><a href="/bank/report/bankTransactions" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Bank Transactions
+                                </a></li>
+
+                                <li><a href="/bank/report/cash_report" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Cash Report 
+                                </a></li>
+
+                                <li><a href="/bank/profitloss" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Profit Loss Report
+                                </a></li>
+
+                                <li><a href="/bank/balancesheet" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Balance Sheet
+                                </a></li>
+
+                                <li><a href="/bank/expenditure" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Income Expenditure
+                                </a></li>
+
+                            </ul>
+                        </li>
+
+                       <!--  PART FOR TOOLS IN ADMIN PANEL -->
+                        <li class="nav-item">
+                            <span class = "nav-link-icon fa fa-database" style="color:#B5BCC3;"></span>
+                            <button class="btn .btn-default  dropdown-toggle" type="button" data-toggle="dropdown">Tools</button>
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+
+                                <li><a href="/bank/accountstatus" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Accounts Status
+                                </a></li>
+                                <li><a href="/bank/docdispatch" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Dispatch Documents
+                                </a></li>
+
+                                <li><a href="/bank/uploadeddocuments" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Uploaded Documents
+                                </a></li>
+                            </ul>
+                        </li>
+
+
+
+                        <!-- VOUCHER BUTTON FOR ADMIN PANEL -->
+                        <li><a href="/admin/employee/voucher/add/#{{ user.get_username }}" class="nav-link">
+                            <i class="nav-link-icon fa fa-database"> </i>
+                            Voucher
+                        </a></li>
+
+                        <!-- Employee section for admin header ///////////-->
+
+                        {% else %}
+
+                        <!-- Employee Panel Options Starting HERE -->
+                        <li class="nav-item">
+                            <span class = "nav-link-icon fa fa-database" style="color:#B5BCC3;"></span>
+                            <button class="btn .btn-default  dropdown-toggle" type="button" data-toggle="dropdown">New</button>
+                            
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                              <li><a href="/admin/employee/client/add/#{{ user.get_username }}" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Client
+                            </a></li>
+                            <li><a href="/admin/employee/client/" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Client Search & Add
+                            </a></li>
+                              <li><a href="/admin/employee/deposits_table/add/#{{ user.get_username }}" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Deposit
+                            </a></li>
+                             
+                            <li><a href="/admin/employee/finance_table/add/#{{ user.get_username }}" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Finance
+                            </a></li>    
+                            
+                            <li><a href="/admin/employee/withdrawl_entry/add/#{{ user.get_username }}" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Withdrawl
+                            </a></li>    
+
+                            </ul>
+                        </li>
+
+
+                        <li class="nav-item">
+
+                            <span class = "nav-link-icon fa fa-database" style="color:#B5BCC3;"></span>
+                            <button class="btn .btn-default  dropdown-toggle" type="button" data-toggle="dropdown">Collections</button>
+                            
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                              <li><a href="/admin/employee/collection_deposit/add/#{{ user.get_username }}" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Deposit
+                            </a></li>
+                              <li><a href="/admin/employee/collection_finance/add/#{{ user.get_username }}" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Finance
+                            </a></li>
+                            </ul>                
+                        </li>
+
+                        <li class="nav-item">
+
+                            <span class = "nav-link-icon fa fa-database" style="color:#B5BCC3;"></span>
+                            <button class="btn .btn-default  dropdown-toggle" type="button" data-toggle="dropdown">Reports</button>
+                            
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                              <li><a href="/bank/report/emp_report" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Emp Report
+                            </a></li>
+                              <li><a href="/bank/report/mycashreport" class="nav-link">
+                                <i class="nav-link-icon fa fa-database"> </i>
+                                Cash Report
+                            </a></li>
+                            </ul>                
+                        </li>
+
+                        <li><a href="/admin/employee/cash_collection/add/#{{ user.get_username }}" class="nav-link">
+                            <i class="nav-link-icon fa fa-database"> </i>
+                            Submit
+                        </a></li>
+
+                        <li><div class="nav-link">
+                            <i class="nav-link-icon fa fa-database"> </i>
+                            <input id="qr" type=file accept="image/*" capture=environment  onchange="openQR(this);" tabindex=-1>
+                        </div></li>
+
+                        <script src="{% static 'employee/deposit_collection2.js' %}"></scriptsrc></script>
+                        <script src="{% static 'employee/qr.js' %}"></scriptsrc></script>
+                      
+                        {% endif %}
+                        
+                        <li><a href="/admin/logout" class="nav-link">
+                            <i class="nav-link-icon fa fa-database"> </i>
+                            Logout
+                        </a></li>
+                
+                    </ul>        
+            </div>
+              
+            </div>
+        </div>             
+        <div class="app-main">
+                    <div class="app-main__outer" style="padding-left:0px;">
+                    <div class="app-main__inner">
+                        <div class="app-page-title">
+                            <div class="page-title-wrapper">
+                                <div class="page-title-heading">
+                                    
+                                        <img width="200" class="rounded-circle" src="/media/users/logo.jpg" alt="logo">
+                                        
+                                   
+                                    <div style="margin-left: 30px;font-size: 30px;margin-top:-40px;">Dashboard
+                                        
+                                    </div>
+                                </div>
+                                {% if user.is_superuser %}
+                                <div class="page-title-actions">
+                                    
+                                    
+                                        <img width="100" class="rounded-circle" src="/media/users/logo.jpg" alt="user pic">
+                                       <div style="margin-left: 10px;font-size: 30px;">
+                                           {{request.user}}
+                                       </div>
+                                
+                                </div>
+                                {% endif %}
+                                    </div>
+                                    
+                        </div>            
+                        {% block content %}
+                        {% endblock%}
+
+                        {% block search_client %}
+                        {% endblock %}
+
+                        {% block report %}
+                        {% endblock %}
+
+                        {% block admin_console %}
+                        {% endblock %}
+
+
+<!--
+                        <h2> {{ is_employee }} </h2>
+                        <h2> {{ user.is_superuser }}</h2>
+                        <h2> {% ifnotequal request.method  "POST" %} 
+                            hii
+                            {% endifnotequal %}
+                        </h2>
+                    -->
+                        
+
+                        
+                        
+                    </div>
+                    <div class="app-wrapper-footer">
+                        
+                    </div>    </div>
+               
+
+        </div>
+    </div>
+<script type="text/javascript" src="{% static 'employee/assets/scripts/main.js' %}"></script>
+{% block js %}
+
+{% endblock %}
+<div class="jvectormap-tip"></div></body></html>
+
+
+
+<script   src="https://code.jquery.com/jquery-3.4.1.min.js"   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="   crossorigin="anonymous"></script>

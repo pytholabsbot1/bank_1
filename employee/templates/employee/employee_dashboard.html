@@ -1,0 +1,113 @@
+
+<!--
+    ********************************This template is for employee console*************************************
+
+    Accessing URL : /bank/     
+    view Function : index 
+    namespace     : index     
+     
+    this template renders when loddedin user is employee
+
+*******************************************************************************************************
+
+
+-->
+{% extends 'employee/theme_base.html' %}
+
+{% block content %}
+{% load static%}
+
+<!-- For Showing Bank and cash Available cards in admin console -->
+<div>
+    
+    <div style="min-width:500px" class="col-lg-6 col-xl-4">
+        <div class="card mb-3 widget-content">
+            <div class="widget-content-wrapper">
+                <div class="widget-content-left">
+                    <div class="widget-heading"> {{ emp_data.finance_coll }} </div>
+                    <div class="widget-subheading">Collection till date</div>
+                </div>
+                <div class="widget-content-right">
+                    <div class="widget-numbers text-danger"><span>Finance</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div  style="min-width:500px" class="col-lg-6 col-xl-4">
+        <div class="card mb-3 widget-content bg-premium-dark">
+            <div class="widget-content-wrapper text-white">
+                <div class="widget-content-left">
+                    <div class="widget-heading">{{ emp_data.deposit_coll  }}</div>
+                    <div class="widget-subheading">Collection till date</div>
+                </div>
+                <div class="widget-content-right">
+                    <div class="widget-numbers text-warning"><span>Deposits</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+
+
+<div class="card" style="border-radius: 20px;margin: 30px;margin-top: -10px;"> 
+    <div style="padding: 30px;
+    padding-bottom: 0px;"> 
+
+        <img  width="100px;" src="/media/{{emp_data.photograph}}" alt="Card image cap">
+        <h5 class="card-title" style="margin-top:10px;">Employee  ID :{{ emp_data.nomination_number }}</h5>
+    
+    
+    </div>
+    
+    <div class="Description" style="margin: 40px;
+    line-height: 10px;"> 
+
+        <p> <b> Name : </b> {{ emp_data.first_name }} {{ emp_data.last_name }} </p>
+        <p> <b> Joining Date : </b> {{ emp_data.employee_joining.joining_date }}</p>
+        <p> <b>Mobile Number : </b>  {{ emp_data.mobile_number_1 }}</p>
+        <p> <b> Email ID :</b> {{ emp_data.email_id }}</p>
+        <p> <b> Father's name :</b> {{ emp_data.father_name }}</p>
+        <p> <b> Nominee name : </b> {{ emp_data.referal.first_name}}</p>
+        <p> <b>Nominee Mobile Number : </b> {{ emp_data.referal_mobile_number_1 }}</p>
+        <p> <b>Current Address : </b> {{ emp_data.current_address }}</p>
+
+    </div>
+
+
+    <div style="padding: 20px;"> 
+
+        <button style="float: right;" onclick="get_table()"> Todays Collection</button>
+    </div>
+    
+</div>
+
+<div id="add_table">
+
+
+</div>
+
+    
+<script>
+
+    function get_table(){
+
+        $.get(
+        "/bank/table/sh",
+        function(data) {
+            $("#add_table").empty();
+            $("#add_table").append(data);
+            
+        });
+
+    }
+
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PDF</title>
+
+    <style>
+    
+    @page {
+        size: letter landscape;
+        @frame content_frame {
+            left: 50pt;
+            width: 684pt;
+            top: 40pt;
+            height: 532pt;
+            -pdf-frame-border: 1;    /* for debugging the layout */
+        }
+        
+    }
+
+    html{
+        font-family: arial;
+    }
+
+    #customers {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        /* border-collapse: collapse; */
+        width: 90%;
+        margin:30px;
+        }
+
+        #customers td, #customers th {
+        /* border: 1px solid #ddd; */
+        padding: 8px;
+        }
+/* 
+        #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+        #customers tr:hover {background-color: #ddd;} */
+
+        #customers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        /* background-color: #557aa6; */
+        /* color: white; */
+        }
+    .container{
+        text-align: center;
+        /* border-style: solid; */
+        margin: 50px;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <img width="200" height="150" src="{{ logo }}" style="float: left;">
+        <img width="150" height="150" src="{{ photo }}" style="float: right;">
+        
+
+        <h1 style="font-family: arial; text-align: center;">Sidhi Credit Co-operative Limited.</h1>
+        <p style="text-align: center;"><span style="font-family: arial; text-align: center;">Reg. office :- Behind Rest House, New Colony, Lalsot, Dist - Dausa(Raj.) - 303503</span></p>
+        <p style="text-align: center; line-height: 0.15;"><span style="font-family: 
+                Arial,Helvetica,sans-serif;">website Rest :- www.siddhicooperative.com, E-mail :- 
+            <a href="mailto:info@siddhicooperative.com">info@siddhicooperative.com</a>
+          </span></p>
+        <p style="text-align: center; line-height: 0.15;"><span style="font-family: 
+                Arial,Helvetica,sans-serif;"><span style="text-align: center;">Phone No. :- 01431-261700</span></span></p>
+
+    <hr style="margin-top: 70px;">
+
+       <div id="info">
+
+            <div id="primary-info" style="text-align: left;
+            padding: 20px;
+            line-height: 7px;
+            width: 400px;
+            float: left;
+            border: 1px solid black;
+            margin: 40px;">
+
+                {% for head , val in primary_info.items %}
+
+                <p> <strong> {{ head }} : </strong> {{ val }}</p>
+
+                {% endfor %}
+            </div>
+
+        <div id="secondary info" style="text-align: left;
+        padding-top: 40px;
+        line-height: 5px;">
+
+                {% for head , val in sec_info.items %}
+
+                    <p> <strong> {{ head }} : </strong> {{ val }}</p>
+
+                {% endfor %}
+
+        </div>
+           
+       </div>
+       
+       {% if headers %}
+
+            <table id="customers">
+                <thead>
+                <tr>
+                    {% for head in headers %}
+                        <th> {{ head }} </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+            
+                <tbody>
+                    
+                    {% for row in rows %}
+
+                    <tr> 
+                    
+                        {% for el in row %}
+                        <td> {{ el }} </td>
+                        {% endfor %}
+
+                    </tr>
+
+                    {% endfor %}
+        
+            </tbody></table>
+
+        {% endif %}
+
+    <!-- <p style="float: right;">for:- Siddhi Credit Co-operative Society Ltd. (Lalsot)</p>
+     -->
+
+
+     <hr style="margin-top: 300px;">
+     <div style="height:70px;"></div>
+     <table style="width: 100%;">
+        <tbody>
+          <tr>
+            <td style="width: 33.3333%;">customer Signature</td>
+            <td style="width: 33.3333%;">Head Signatur</td>
+            <td style="width: 33.3333%;">Secratory</td>
+          </tr>
+        </tbody>
+      </table>
+    
+</div>
+    
+</body>
+</html>

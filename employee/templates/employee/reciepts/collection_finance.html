@@ -1,0 +1,360 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Loan</title>
+    
+    <style>
+    h3{
+        margin: 15px 0px;
+    }
+    h5 {
+        margin: 5px 0px;
+    }
+    h6 {
+        margin: 20px 0px;
+    }
+    .invoice-box {
+        max-width: 800px;
+        margin: 0 0;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+        font-size: 16px;
+        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        color: #555;
+    }
+    
+    .invoice-box table {
+        width: 100%;
+        line-height: inherit;
+        text-align: left;
+    }
+    
+    .invoice-box table td {
+        padding: 4px;
+        vertical-align: center;
+    }
+    
+    .invoice-box table tr td:nth-child(2) {
+        text-align: right;
+    }
+    
+    .invoice-box table tr.top table td {
+        padding-bottom: 5px;
+    }
+    
+    .invoice-box table tr.top table td.title {
+        font-size: 45px;
+        color: #333;
+    }
+    
+    .invoice-box table tr.information table td {
+        padding-bottom: 12px;
+    }
+    
+    .invoice-box table tr.heading td {
+        background: #eee;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+    }
+    
+    .invoice-box table tr.details td {
+        padding-bottom: 10px;
+    }
+    
+    .invoice-box table tr.item td{
+        border-bottom: 1px solid #eee;
+    }
+    
+    .invoice-box table tr.item.last td {
+        border-bottom: none;
+    }
+    
+    .invoice-box table tr.total td:nth-child(2) {
+        border-top: 2px solid #eee;
+        font-weight: bold;
+    }
+    
+    @media only screen and (max-width: 600px) {
+        .invoice-box table tr.top table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+        
+        .invoice-box table tr.information table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+    }
+    
+    </style>
+</head>
+
+<body>
+    <div class="copy" id="one">
+
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <h6>Siddhi Credit Cooperative Society Ltd.</h6>
+                            </td>
+                            <h5>Customer's Copy</h5>
+                            <td>
+                                Collection Number ID: {{data.id}} <br>
+                                Created: {{time}} <br>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            
+            
+            
+            <tr class="heading">
+                <td>
+                    Description
+                </td>
+                
+                <td>
+                    Value
+                </td>
+            </tr>
+            
+            <tr class="item">
+                <td>
+                    Finance ID:
+                </td>
+                
+                <td>
+                    {{data.finance.finance.loan_account_number}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    EMI Number
+                </td>
+                
+                <td>
+                    {{emi_count}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    Bill Number
+                </td>
+                
+                <td>
+                    {{data.bill_no}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    EMI Loan Recieving Date
+                </td>
+                
+                <td>
+                    {{data.loan_emi_received_date}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    Agent Name
+                </td>
+                
+                <td>
+                    {{data.agent_name}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    Person
+                </td>
+                
+                <td>
+                    {{data.person}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    Loan EMI Recieved
+                </td>
+                
+                <td>
+                    {{data.loan_emi_received}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    Penalty
+                </td>
+                
+                <td>
+                    {{data.penalty}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    Created Time
+                </td>
+                
+                <td>
+                    {{data.created_time}}
+                </td>
+            </tr>
+            <tr class="item last">
+                <td>
+                    Remarks
+                </td>
+                
+                <td>
+                    {{data.remarks}}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="text-align:right; margin-top:50px;">
+        <h4>
+            Signature
+        </h4>
+    </div>
+        </div>
+    <hr style="border-top: 3px dashed black">
+        <div class="copy" id="two">
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <h6>Siddhi Credit Cooperative Society Ltd.</h6>
+                            </td>
+                            <h5>Office's Copy</h5>
+                            <td>
+                                Collection Number ID: {{data.id}} <br>
+                                Created: {{time}} <br>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="heading">
+                <td>
+                    Description
+                </td>
+                
+                <td>
+                    Value
+                </td>
+            </tr>
+            
+            <tr class="item">
+                <td>
+                    Finance ID:
+                </td>
+                
+                <td>
+                    {{data.finance.finance.loan_account_number}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    EMI Number
+                </td>
+                
+                <td>
+                    {{emi_count}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    Bill Number
+                </td>
+                
+                <td>
+                    {{data.bill_no}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    EMI Loan Recieving Date
+                </td>
+                
+                <td>
+                    {{data.loan_emi_received_date}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    Agent Name
+                </td>
+                
+                <td>
+                    {{data.agent_name}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    Person
+                </td>
+                
+                <td>
+                    {{data.person}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    Loan EMI Recieved
+                </td>
+                
+                <td>
+                    {{data.loan_emi_received}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    Penalty
+                </td>
+                
+                <td>
+                    {{data.penalty}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    Created Time
+                </td>
+                
+                <td>
+                    {{data.created_time}}
+                </td>
+            </tr>
+            <tr class="item last">
+                <td>
+                    Remarks
+                </td>
+                
+                <td>
+                    {{data.remarks}}
+                </td>
+            </tr>
+            
+            
+        </table>
+    </div>
+    <div style="text-align:right; margin-top:40px;">
+        <h4>
+            Signature
+        </h4>
+    </div>
+     </div>
+</body>
+</html>

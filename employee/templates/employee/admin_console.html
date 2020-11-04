@@ -1,0 +1,275 @@
+{% extends 'employee/theme_base.html' %}
+{% block admin_console %}
+
+<!--
+    ********************************This template is for admin console*************************************
+
+    Accessing URL : /bank/     
+    view Function : index 
+    namespace     : index     
+     
+    this template renders when loddedin user is super user
+
+*******************************************************************************************************
+
+
+-->
+
+<nav>
+    <ul>
+
+        {% for user_data in loggedin %}
+             
+            <li> <strong> {{ user_data.0 }} </strong> <br>
+
+                UserName : {{ user_data.2}} {{ user_data.3}} <br>
+                Login Time: {{ user_data.1}}
+                
+            </li>
+
+       {% endfor %}
+    </ul>
+</nav>    
+
+
+
+<div class="row">
+  
+<!-- For Showing Bank and cash Available cards in admin console -->
+    <div style="min-width:500px" class="col-lg-6 col-xl-4">
+        <div class="card mb-3 widget-content">
+            <div class="widget-content-wrapper">
+                <div class="widget-content-left">
+                    <div class="widget-heading"> {{ cash }} </div>
+                    <div class="widget-subheading">Updated Balance
+
+                        <!-- notes -->
+                        <p style="margin:0px;">2000x : <b>  {{ balance.n_2000 }} </b> </p>
+                        <p style="margin:0px;">500x : <b> {{ balance.n_500 }} </b> </p>
+                        <p style="margin:0px;">200x : <b> {{ balance.n_200 }} </b> </p>
+                        <p style="margin:0px;">100x : <b> {{ balance.n_100 }} </b> </p>
+                        <p style="margin:0px;">50x : <b> {{  balance.n_50 }} </b> </p>
+                        <p style="margin:0px;">20x : <b> {{ balance.n_20 }} </b> </p>
+                        <p style="margin:0px;">10x : <b> {{ balance.n_10  }} </b> </p>
+                        <p style="margin:0px;">C 1x : <b> {{ balance.c_1 }} </b> </p>
+                        <p style="margin:0px;">C 2x : <b> {{ balance.c_2  }} </b> </p>
+                        <p style="margin:0px;">C 5x : <b> {{ balance.c_5 }} </b> </p>
+                        <p style="margin:0px;">C 10x : <b> {{ balance.c_10  }} </b> </p>
+                        
+                    </div>
+                </div>
+                <div class="widget-content-right">
+                    <div class="widget-numbers text-danger"><span>Cash</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div  style="min-width:500px" class="col-lg-6 col-xl-4">
+        <div class="card mb-3 widget-content bg-premium-dark">
+            <div class="widget-content-wrapper text-white">
+                <div class="widget-content-left">
+                    <div class="widget-heading">{{ bank }}</div>
+                    <div class="widget-subheading">Updated Balance</div>
+                </div>
+                <div class="widget-content-right">
+                    <div class="widget-numbers text-warning"><span>Bank</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ********************************Deposit Collection  Section****************************************-->
+
+
+<div class="main-card mb-3 card">
+    <h2 style="margin-left:13px;"> Deposits  </h2>
+    <div class="no-gutters row">
+        
+
+
+        {% for dp , amt in dp_amounts.items %}
+        <div class="col-md-4">
+            <div class="widget-content">
+                <div class="widget-content-wrapper">
+                    <div class="widget-content-right ml-0 mr-3">
+                        <div class="widget-numbers text-success">{{ dp }}</div>
+                    </div>
+                    <div class="widget-content-left">
+                        <div class="widget-heading">{{ amt }}</div>
+                        <div class="widget-subheading">Updated Collections</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+
+<!-- ********************************Finance Collection  Section****************************************-->
+
+
+<div class="main-card mb-3 card">
+    <h2 style="margin-left:13px;"> Finances  </h2>
+    <div class="no-gutters row">
+        
+
+
+        {% for fc , amt in fc_amounts.items %}
+        <div class="col-md-4">
+            <div class="widget-content">
+                <div class="widget-content-wrapper">
+                    <div class="widget-content-right ml-0 mr-3">
+                        <div class="widget-numbers text-success">{{ fc }}</div>
+                    </div>
+                    <div class="widget-content-left">
+                        <div class="widget-heading">{{ amt }}</div>
+                        <div class="widget-subheading">Updated Collections</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+<!-- ************************* Loan approval table******************************************* -->
+
+
+<div class="main-card mb-3 card">
+    <div class="card-body"><h5 class="card-title">Loan Approval</h5>
+
+        <table class="mb-0 table table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Loan Account</th>
+                <th>Name</th>
+                <th>Area</th>
+                <th>Expected Date</th>
+                <th>Expected Amount</th>
+                <th>Mobile</th>
+                <th>Applied</th>
+               
+            </tr>
+            </thead>
+
+            <!-- <p>{{ loan_data }}</p> -->
+            <tbody>
+                {% for loan in loan_data %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td> <a href="/admin/employee/approved_finance_table/add/#{{ loan.9 }}"> {{ loan.0 }} </a> </td>
+                    <td> {{ loan.1 }} {{ loan.2 }}</td>
+                    <td> {{ loan.3 }}</td>
+                    <td> {{ loan.4 }}</td>
+                    <td> {{ loan.5 }}</td>
+                    <td> {{ loan.6 }}</td>
+                    <td> {{ loan.7 }}</td>
+                    
+                </tr>
+           {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+
+<!--******************************** Maturity of deposits table *****************************************-->
+
+
+
+
+
+<div class="main-card mb-3 card">
+    <div class="card-body"><h5 class="card-title">Maturity of deposits</h5>
+
+        <table class="mb-0 table table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Deposit Account</th>
+                <th>Name</th>
+                <th>Area</th>
+                <th>Mobile</th>             
+                <th>Opening Date</th>
+                <th>Type</th>
+                <th>Interest</th>
+                <th>Maturity Amount</th>
+               
+            </tr>
+            </thead>
+            <tbody>
+                {% for dp in dp_data %}
+                <tr>
+                    
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td> <a href="/admin/employee/withdrawl_entry/add?num={{ dp.0 }}&photo={{ dp.10|slice:"13:" }}&sign={{ dp.11|slice:"13:" }}"> {{ dp.0 }} </a> </td>
+                    <td> {{ dp.1 }} {{ dp.2 }}</td>
+                    <td> {{ dp.3 }}</td>
+                    <td> {{ dp.4 }}</td>
+                    <td> {{ dp.5 }}</td>
+                    <td> {{ dp.6 }}</td>
+                    <td> {{ dp.7 }}</td>
+                    <td> {{ dp.8 }}</td>
+                    
+                </tr>
+           {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+<!--  **************************   Cash collection from employee at the end of the day ****************************-->
+
+
+<div class="main-card mb-3 card">
+    <div class="card-body"><h5 class="card-title">Employee Cash Collection</h5>
+        
+        <table class="mb-0 table table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Total Finance</th>
+                <th>Total Deposit </th>
+                <th>Total amount </th>
+                <th>Approved </th>
+
+            </tr>
+            <tbody>
+                {% for dp in col_data %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td> <a href="/admin/employee/cash_collection/{{ dp.4 }}"> {{ dp.0 }} {{ dp.1 }} </a> </td>
+                    <td> {{ dp.2 }}</td>
+                    <td> {{ dp.3 }}</td>
+                    <td> {{ dp.2 |add:dp.3}}</td>
+                    <td>{{ dp.5 }}</td>
+                </tr>
+           {% endfor %}
+            </tbody>
+       
+        </table>
+        <br><br>
+      
+    </div>
+    
+</div>
+
+
+
+
+
+
+
+{% endblock %}

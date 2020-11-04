@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+
+
+      .card{
+        
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        height: auto;
+        padding: 10px 10px 20px 10px;
+        border-radius: 20px;
+        margin: 50px;
+        background: white;
+        /* margin-bottom: -60px !important; */
+        width: 30%;
+        border: 1px solid;
+      }
+          
+
+    </style>
+
+</head>
+<body>
+    
+    <div class="card">
+
+        <div id="head" style="text-align: center;">
+            <img src="data:image/jpeg;base64,{{ photo_data }}" alt="" style="width: 100px;height: 100px;">
+            <p> <strong> ID : {{ e.nomination_number }} </strong> </p>
+        </div>
+        
+        <div id="body" style="line-height: 10px;
+        padding: 10px;">
+            <p  style="font-family: arial;">Name : {{ e.first_name}} {{ e.last_name}}</p>
+            <p style="font-family: arial;">Mobile : {{ e.mobile_number_1 }}</p>
+            <p style="font-family: arial;">Designation : {{ e.employee_joining.designation }}</p>
+            <p style="font-family: arial;">Joining Date : {{ joining_date }} </p>
+
+        </div>
+        
+        <img src="data:image/jpeg;base64,{{ sign_data }}" alt="" style="width: 120px;height: 100px;">
+
+        <img src="data:image/jpeg;base64,{{ header_data }}"  alt="" style="height:50px;margin-top: 35px;/* margin-left: 0px; */margin-bottom: -13px;width: 100%;">
+    </div>
+
+</body>
+</html>

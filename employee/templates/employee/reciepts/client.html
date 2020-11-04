@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Client Receipt</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style type="text/css">
+       @page {
+        size: letter landscape;
+        @frame content_frame {
+            left: 50pt;
+            width: 684pt;
+            top: 40pt;
+            height: 532pt;
+            -pdf-frame-border: 1;    /* for debugging the layout */
+        }
+        
+    }
+    table{
+        
+    }
+        tr,th,td{
+            
+            padding:2px;
+            text-align: left;
+        }
+        p{
+            font-size:12px;
+            font-weight: 600;
+        }
+        
+      
+
+    </style>
+</head>
+<body>
+   
+<div class="container">
+    <div class="card">
+       <table >
+           <tr>
+               <th style="width:20%;">
+                <img width="200" height="150" src="/media/users/logo.jpg">
+               </th>
+               <th style="width:60%;" >
+                <center><p style="text-decoration:underline; font-size: 30px;padding-top: 30px;">Sidhi Credit Co-operative Limited.</p></center>
+
+               </th>
+               
+               <th style="width:20%;">
+                <!-- <img width="200" height="200" src="/media/users/qrcode/deposit_{{ client.nomination_number}}.jpg"> -->
+                <img width="150" height="150" src="{{ photo }}" alt="Client_photo">
+               </th>
+               
+           </tr>
+       </table>
+         
+        
+               
+                    <center><p>Reg. office :- Behind Rest House, New Colony, Lalsot, Dist - Dausa(Raj.) - 303503 </p></center>
+               
+                
+                  <center><p>Phone No. :- 01431-261700, website Rest :- www.siddhicooperative.com, E-mail :- info@siddhicooperative.com</p></center> 
+            <hr>
+           
+            <table style="border-right:1px solid black; max-width: 100%;">
+            <tr>
+                <td >
+                    <table>
+                        <tr>
+                            <th>Name :</th>
+                            <th >{{ client.first_name}}</th>
+                        </tr>
+                        <tr>
+                            <th>Address  :</th>
+                            <th >{{ client.current_address}}</th>
+                        </tr>
+
+                        <tr>
+                            <th>Gender : </th>
+                            <th>{{ client.gender}}</th>
+                        </tr>
+                        
+                    </table>
+
+
+                </td>
+                <td>
+                    <table >
+                        <tr>
+                            <th>Nomination Number :</th>
+                            <th>{{ client.nomination_number}}</th>
+                        </tr>
+                        <tr>
+                            <th>Nominee Fees</th>
+                            <th>{{ client.nomination_fees}}</th>
+                        </tr>
+                        <tr>
+                            <th>Employee Name : </th>
+                            <th>{{ client.agent_name}}</th>
+                        </tr>
+
+                        <tr>
+                            <th>Mobile Number : </th>
+                            <th>{{ client.mobile_number_1}}</th>
+                        </tr>
+                        
+                        
+
+                    </table>
+
+                </td>
+            </tr>
+            </table>
+            <hr>
+        
+       
+        <h3 style="margin-left:600px;">for:- Siddhi Credit Co-operative Society Ltd. (Lalsot)</h3>
+  
+</div>
+
+</body>
+</html> 

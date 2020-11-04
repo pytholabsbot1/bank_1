@@ -1,0 +1,274 @@
+<!--******************  Finance Application Form  ****************-->
+
+<!--
+
+    Accessing URL  : bank/search/finance_form/
+    view function   : finance_form
+
+
+-->
+{% load static%}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+{% block style %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'accounts/css/crispy.css' %}">
+{% endblock %}
+{% block js%}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+{% endblock %}
+  <div class="container">
+<form method="POST" action="finance_save/" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <div class="form-vertical">
+    	<legend class="border-bottom mb-4">
+          Finance Application Form
+        </legend>
+
+      <div class="form-row">
+          <div class="form-group col-md-4 col-sm-6 mb-0">
+            {{ finance_form.serial_number|as_crispy_field }}
+          </div>
+          <div class="form-group col-md-4 col-sm-6 mb-0">
+            {{ finance_form.nomination_number|as_crispy_field }}
+          </div>
+          <div class="form-group col-md-4 col-sm-6 mb-0">
+            {{ finance_form.entry_date|as_crispy_field }}
+          </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4 col-sm-6 mb-0">
+              {{ finance_form.loan_account_number|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 col-sm-6 mb-0">
+              {{ finance_form.finance_type|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 col-sm-6 mb-0">
+              {{ finance_form.loan_amount|as_crispy_field }}
+            </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-group col-md-4 col-sm-6 mb-0">
+                {{ finance_form.loan_duration|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-4 col-sm-6 mb-0">
+                {{ finance_form.duration_type|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-4 col-sm-6 mb-0">
+                {{ finance_form.emi_type|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-4 col-sm-6 mb-0">
+                  {{ finance_form.loan_holder_first_name|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 col-sm-6 mb-0">
+                  
+                  {{finance_form.loan_holder_last_name|as_crispy_field}}
+                </div>
+                <div class="form-group col-md-4 col-sm-6 mb-0">
+                  {{ finance_form.mother_name|as_crispy_field }}
+                </div>
+              </div>
+
+              <div class="form-row">
+                  <div class="form-group col-md-4 col-sm-6 mb-0">
+                    {{ finance_form.age|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-md-4 col-sm-6 mb-0">
+                    {{ finance_form.gender|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-md-4 col-sm-6 mb-0">
+                    {{ finance_form.date_of_birth|as_crispy_field }}
+                  </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4 col-sm-6 mb-0">
+                      {{ finance_form.current_address|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 mb-0">
+                      {{ finance_form.village|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 mb-0">
+                      {{ finance_form.city|as_crispy_field }}
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                      <div class="form-group col-md-4 col-sm-6 mb-0">
+                        {{ finance_form.district|as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-4 col-sm-6 mb-0">
+                        {{ finance_form.state|as_crispy_field }}
+                      </div>
+                      <div class="form-group col-md-4 col-sm-6 mb-0">
+                        {{ finance_form.pincode|as_crispy_field }}
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4 col-sm-6 mb-0">
+                          {{ finance_form.country|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-4 col-sm-6 mb-0">
+                          {{ finance_form.email_id|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-4 col-sm-6 mb-0">
+                          
+                          {{ finance_form.father_name|as_crispy_field }}
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                          <div class="form-group col-md-4 col-sm-6 mb-0">
+                            {{ finance_form.mobile_number_1|as_crispy_field }}
+                          </div>
+                          <div class="form-group col-md-4 col-sm-6 mb-0">
+                            {{ finance_form.mobile_number_2|as_crispy_field }}
+                          </div>
+                          <div class="form-group col-md-4 col-sm-6 mb-0">
+                            {{ finance_form.landline_number|as_crispy_field }}
+                          </div>
+                        </div>
+                         
+
+                              <div class="form-row">
+                                  <div class="form-group col-md-4 col-sm-6 mb-0">
+                                    {{ finance_form.id_type|as_crispy_field }}
+                                  </div>
+                                  <div class="form-group col-md-4 col-sm-6 mb-0">
+                                    {{ finance_form.id_number|as_crispy_field }}
+                                  </div>
+                                  <div class="form-group col-md-4 col-sm-6 mb-0">
+                                
+                                    {{ finance_form.category|as_crispy_field }}
+                                  </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-4 col-sm-6 mb-0">
+                                      {{ finance_form.employee_name|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 mb-0">
+                                      {{ finance_form.expected_date|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 mb-0">
+                                      {{ finance_form.expected_amount|as_crispy_field }}
+                                    </div>
+                                  </div>
+
+                                  <div class="form-row">
+                                      <div class="form-group col-md-4 col-sm-6 mb-0">
+                                        {{ finance_form.guaranter_address|as_crispy_field }}
+                                      </div>
+                                      <div class="form-group col-md-4 col-sm-6 mb-0">
+                                        {{ finance_form.guaranter_name|as_crispy_field }}
+                                      </div>
+                                      <div class="form-group col-md-4 col-sm-6 mb-0">
+                                        {{ finance_form.guaranter_relation|as_crispy_field }}
+                                      </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                      <div class="form-group col-md-12 mb-0">
+                                        {{ finance_form.permanent_address|as_crispy_field }}
+                                      </div>                                  
+                                    </div>
+
+                              
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ finance_form.stamp_photograph|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ finance_form.cheque_photograph|as_crispy_field }}
+                                    </div>
+                                    
+                                  </div>
+
+                                  <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ finance_form.id_photograph1|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ finance_form.loan_holder_photograph|as_crispy_field }}
+                                    </div>                                   
+                                  </div>
+
+                                  <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ finance_form.id_photograph2|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ finance_form.id_photograph3|as_crispy_field }}
+                                    </div>                                   
+                                  </div>
+
+                                  <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ finance_form.id_photograph4|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      
+                                    </div>                                   
+                                  </div>
+
+                                  
+
+                                  <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ finance_form.loan_holder_signature|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ finance_form.loan_holder_thumb_impression|as_crispy_field }}
+                                    </div>
+                                   
+                                  </div>
+
+                                  <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ finance_form.guaranter_photograph|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 mb-0">
+                                      {{ finance_form.guaranter_signature|as_crispy_field }}
+                                    </div>
+                                   
+                                  </div>
+
+                                 
+
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12 mb-0">
+                                                {{ finance_form.loan_checkbox|as_crispy_field }}
+                                            </div>
+                                            
+                                          </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12 mb-0">
+                                          {{ finance_form.remarks|as_crispy_field }}
+                                        </div>
+                                        
+                                      </div>
+
+                                      <div class="form-row">
+                                          <div class="form-group col-md-12 mb-0">
+                                              <button class="btn btn-outline-info" type="submit">
+                                                  Save
+                                                </button>                                        
+                                          </div>
+                                         
+                                        </div>
+      
+    </div>
+   </form>
+</div>
+{% endblock %}

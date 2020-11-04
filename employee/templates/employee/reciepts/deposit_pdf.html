@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Deposit Receipt</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style type="text/css">
+       @page {
+        size: letter landscape;
+        @frame content_frame {
+            left: 50pt;
+            width: 684pt;
+            top: 40pt;
+            height: 532pt;
+            -pdf-frame-border: 1;    /* for debugging the layout */
+        }
+        
+    }
+   
+    tr,th,td{
+        
+        padding:2px;
+        text-align: left;
+    }
+    p{
+        font-size:12px;
+        font-weight: 600;
+    }
+    
+      
+
+    </style>
+</head>
+<body>
+   
+<div class="container">
+    <div class="card">
+       <table >
+           <tr>
+               <th style="width:20%;">
+                <img width="200" height="150" src="/media/users/logo.jpg">
+               </th>
+               <th style="width:60%;" >
+                <center><p style="text-decoration:underline; font-size: 30px;padding-top: 30px;">Sidhi Credit Co-operative Limited.</p></center>
+
+               </thstyle="width:20%;">
+               
+               <th style="width:20%;">
+                <img width="200" height="200" src="/media/users/qrcode/deposit_{{ dp.society_account_number}}.jpg">
+               </th>
+               
+           </tr>
+       </table>
+         
+        
+               
+                    <center><p>Reg. office :- Behind Rest House, New Colony, Lalsot, Dist - Dausa(Raj.) - 303503 </p></center>
+               
+                
+                  <center><p>Phone No. :- 01431-261700, website Rest :- www.siddhicooperative.com, E-mail :- info@siddhicooperative.com</p></center> 
+            <hr>
+           
+            <table style="border-right:1px solid black;width: 50%;">
+            <tr>
+                <td >
+                    <table>
+                        <tr>
+                            <th>Received From :</th>
+                            <th >{{ dp.person.first_name }} {{ dp.person.last_name }}</th>
+                        </tr>
+                        <tr>
+                            <th>Address  :</th>
+                            <th >{{ dp.person.current_address}}</th>
+                        </tr>
+                        <tr>
+                            <th>Gender  :</th>
+                            <th >{{ dp.person.gender}}</th>
+                        </tr>
+                    </table>
+
+
+                </td>
+                <td>
+                    <table >
+                        <tr>
+                            <th>Member A/C No. :</th>
+                            <th>{{ dp.society_account_number}}</th>
+                        </tr>
+                        <tr>
+                            <th>Account Type : </th>
+                            <th>{{ dp.scheme.name }}</th>
+                        </tr>
+                        <tr>
+                            <th>Employee Name : </th>
+                            <th>{{ dp.agent_name.first_name}} {{ dp.agent_name.last_name}}</th>
+                        </tr>
+                 
+                    </table>
+
+                </td>
+            </tr>
+            </table>
+            <hr>
+     
+       
+        <table class="table" style="border:1px solid black;">
+            <thead>
+            <tr >
+                <th>Amount</th>
+                <th>Starting Date</th>
+                <th>Period</th>
+                <th>Maturity Date</th>
+                <th>Maturity Amount</th>
+                <th>Intrest % PA</th>
+               
+            </tr>
+            </thead>
+            <tbody>
+           
+                <tr>
+                    <td>{{ dp.account_opening_amount}}</td>
+                    <td>{{ dp.account_opening_date}}</td>
+                    <td>{{ dp.scheme.duration }} {{ dp.scheme.duration_type }}</td>           
+                    <td>{{ dp.maturity_date }}</td>
+                    <td> {{ dp.maturity_amount }}</td>
+                    <td>{{ roi }}%</td>
+                  
+                </tr>
+           
+            </tbody>
+        </table>
+    </div>
+ 
+        
+       
+            <h3 style="margin-left:600px;">for:- Siddhi Credit Co-operative Society Ltd. (Lalsot)</h3>
+  
+</div>
+
+</body>
+</html> 

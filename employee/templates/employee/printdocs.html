@@ -1,0 +1,117 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+    <title>Print Documents</title>
+    <style>
+.spinner {
+  width: 70px;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 7px;
+  height: 7px;
+  background-color: white;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+    </style>
+  </head>
+  <body style="background-color: rgb(216, 240, 250);">
+    <form action="" method="POST">
+    <div class="form-area bg-dark text-white rounded-lg mt-5 w-50 ml-5 p-4 pl-5">
+    <h1>Print Documents</h1>
+    <span class="float-right">
+        <a onClick="window.location.reload(true);" class="btn btn-danger">Reset</a>
+        <a href="/bank/" class="btn btn-info">Dashboard</a>
+    </span>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="selectdocument">Select Document</label>
+                        <select class="form-control" id="selectdocument" name="document">
+                            <option value="none" selected disabled hidden> 
+                                Select a document
+                            </option> 
+                            {% for doc in docs %}
+                                <option value="{{doc}}">{{doc}}</option>
+                            {% endfor %}
+                    </select>
+                </div>
+                <div class="spinner m-4">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+                <a class="btn btn-primary bottom" id="docsubmit">Select Document</a>
+                <div class="select-object my-5">
+                    <select type="hidden" id="e10" style="width:300px">
+                        <option value="none" selected disabled hidden> 
+                                Select an object
+                            </option> 
+                    </select>
+                    <a class="btn btn-primary bottom mt-4" id="object">Select object</a>
+                    <a class="btn btn-success bottom mt-4" id="print">Go To Print Page</a>
+                    <a class="btn btn-info bottom mt-4" id="history">View History</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+
+    <table id="print-history" class="table table-hover mt-3">
+    <thead>
+                    <tr>
+                        <th scope="col">Index</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Timestamp</th>
+                    </tr>
+                </thead>
+    </table>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="{% static 'employee/printdocs.js' %}"></script>
+  </body> 
+</html>
