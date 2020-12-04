@@ -15,6 +15,29 @@
 
 -->
 
+<!-- Header -->
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            
+                <img width="200" class="rounded-circle" src="/media/users/logo.jpg" alt="logo">
+                
+           
+            <div style="margin-left: 30px;font-size: 30px;margin-top:-40px;">Dashboard
+                
+            </div>
+        </div>
+        <div class="page-title-actions">
+            
+                <img width="100" class="rounded-circle" src="/media/{{request.user.admin_details_set.first.photograph}}" alt="user pic">
+               <div style="margin-left: 10px;font-size: 30px;">
+                   {{request.user.admin_details_set.first.name}}
+               </div>
+        </div>
+            </div>
+            </div>
+<!-- Header -->
+
 <nav>
     <ul>
 

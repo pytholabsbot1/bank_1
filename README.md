@@ -1,3 +1,5 @@
+## VM CONFIG : ubuntu 18 LTS
+
 os.system('sudo -i -u postgres pg_dump -Fc  --dbname=postgresql://vaqas:kdsfmsbAAMNVJHFHVjvhjhfks8736587365smdnbmfnsdbf2836487sdjbfjsd@127.0.0.1:5432/banking_data > /home/vaqas/backup.pgdump')
 
 
@@ -16,8 +18,7 @@ git config --global credential.helper store
 
 # banking_dump
 
-JUpyter notebook access : http://34.70.237.129:9780/?token=1b
-c57402ae260bfa6885a8fddbb27cb8caa7a1bcb5cf76ba
+JUpyter notebook access : http://127.0.0.1:8000/?token=362b95463338078c4c916a0ead1c1765e7e35f825ba52d8d
 
 
 Pass : 1bc57402ae260bfa6885a8fddbb27cb8caa7a1bcb5cf76ba
@@ -36,11 +37,14 @@ source myprojectenv/bin/activate
 1. Installation
 
 sudo apt-get update -y
-sudo apt-get install python3-pip python3-dev libpq-dev postgresql postgresql-contrib virtualenv nginx -y
+sudo apt-get install python3-pip libpq-dev postgresql postgresql-contrib virtualenv nginx -y
 pip3 install django django-crispy-forms django-mysql qrcode[pil] xhtml2pdf pdfkit django-session-timeout
 
 # for PDF Generation Install this
 wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
+
+# install dependencies
+sudo apt-get -f install -y
 sudo dpkg -i wkhtmltox_0.12.5-1.bionic_amd64.deb
 
 <!--  -->
@@ -50,7 +54,7 @@ pip3 install git+git://github.com/ojii/pymaging-png.git#egg=pymaging-png
 
 >>> User creation
 sudo adduser vaqas
-sudo usermod -aG sudo vaqas
+sudo usermod -aG sudo vaqas sudo
 
 sudo adduser banking_data
 sudo usermod -aG sudo banking_data
@@ -84,15 +88,17 @@ exit
 
 >>>>>>>
 
-git clone https://github.com/ish/banking_dump.git
+git clone -b master https://github.com/pytholabsbot1/bank_1.git
+<!-- git clone https://github.com/ish/banking_dump.git -->
 
+mv bank_1 banking_dump
 cd banking_dump
 pip3 install virtualenv jupyter notebook 
 
 
 virtualenv --python=python3.6 myprojectenv
 source myprojectenv/bin/activate
-pip3 install -r req.txt
+pip3 install -r requirements.txt
 python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py createsuperuser
@@ -127,7 +133,7 @@ sudo nano /etc/nginx/sites-available/sidhi_society
 
 server {
     listen 80;
-    server_name 34.70.237.129;
+    server_name 35.202.48.90;
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
@@ -177,7 +183,7 @@ restart = sudo service postgresql restart
 
 sudo ufw allow 8000
 
-jupyter notebook --ip=0.0.0.0 --port=9780
+jupyter notebook --ip=0.0.0.0 --port=8000
 
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

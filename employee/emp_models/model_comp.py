@@ -70,6 +70,20 @@ FINANCE_TYPE_CHOICES = [
 #     return num
 
 
+
+class Admin_Details(models.Model):
+
+    user_account = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+
+    name = models.CharField(max_length= 100,blank =True, null= True)
+    Designation = models.CharField(max_length= 100,blank =True, null= True)
+    photograph = CropperImageField(upload_to='users/images', null=True,blank=True)
+
+
+
 class Gaurantor(models.Model):    
     name = models.CharField(max_length = 100, null=True, )
     father_name = models.CharField(max_length = 100, null=True, )
@@ -93,7 +107,7 @@ class Gaurantor(models.Model):
         if self.expected_amount:
             expected = self.expected_amount
             maximum = self.max_amount
-            if expected > maximum:
+            if expected < maximum:
                 print("TEST")
                 # pass
             else:

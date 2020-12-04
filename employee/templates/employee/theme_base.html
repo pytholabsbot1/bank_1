@@ -350,6 +350,11 @@ nav ul{overflow:hidden; overflow-y:scroll;}
                                     Cash Report 
                                 </a></li>
 
+                                <li><a href="/bank/report/dividendreport" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Dividend Report 
+                                </a></li>
+
                                 <li><a href="/bank/profitloss" class="nav-link">
                                     <i class="nav-link-icon fa fa-database"> </i>
                                     Profit Loss Report
@@ -363,6 +368,11 @@ nav ul{overflow:hidden; overflow-y:scroll;}
                                 <li><a href="/bank/expenditure" class="nav-link">
                                     <i class="nav-link-icon fa fa-database"> </i>
                                     Income Expenditure
+                                </a></li>
+
+                                <li><a href="/bank/report/dividendreport" class="nav-link">
+                                    <i class="nav-link-icon fa fa-database"> </i>
+                                    Dividend Report
                                 </a></li>
 
                             </ul>
@@ -501,31 +511,7 @@ nav ul{overflow:hidden; overflow-y:scroll;}
         <div class="app-main">
                     <div class="app-main__outer" style="padding-left:0px;">
                     <div class="app-main__inner">
-                        <div class="app-page-title">
-                            <div class="page-title-wrapper">
-                                <div class="page-title-heading">
-                                    
-                                        <img width="200" class="rounded-circle" src="/media/users/logo.jpg" alt="logo">
-                                        
                                    
-                                    <div style="margin-left: 30px;font-size: 30px;margin-top:-40px;">Dashboard
-                                        
-                                    </div>
-                                </div>
-                                {% if user.is_superuser %}
-                                <div class="page-title-actions">
-                                    
-                                    
-                                        <img width="100" class="rounded-circle" src="/media/users/logo.jpg" alt="user pic">
-                                       <div style="margin-left: 10px;font-size: 30px;">
-                                           {{request.user}}
-                                       </div>
-                                
-                                </div>
-                                {% endif %}
-                                    </div>
-                                    
-                        </div>            
                         {% block content %}
                         {% endblock%}
 

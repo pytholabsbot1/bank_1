@@ -8,7 +8,7 @@ from itertools import zip_longest
 from django.contrib.auth.decorators import login_required
 from django.utils.safestring import mark_safe
 from itertools import chain
-
+import datetime as dt
 
 def AgentCollection(request,tp):
 
@@ -67,6 +67,26 @@ def AgentCollection(request,tp):
     return context
         
 
+def dividendreport(request):
+    f_year = datetime.date.fromisoformat(request.POST.get("financial_year"))
+    p = request.POST.get("percentage")
+    audit = request.POST.get("audit") == "on"
+
+    display_fields = ('nomination_number' , 'entry_date' ,"first_name" , "last_name" , "father_name" , "mobile_number_1" , "sharing_amount" , "no_of_shares" )
+
+    rows_ =  client.objects.filter(entry_date__range = (f_year , f_year + relativedelta(years=1)) , status=True).values_list(*display_fields)
+    rows = [i + ( i[-2] * round(float(p)/100 ,2 ) , )  for i in rows_]
+
+    context = {'headers':[i.replace('_'," ").capitalize() for i in display_fields] + ["Dividend Amt"]}
+    context['rows'] = rows
+    context['title'] = 'Dividend Report'
+
+    #get the table html
+    rendered_report = render(request,"employee/table.html",context)
+    context['table'] = rendered_report.content.decode('utf-8')
+    return context
+
+
 def ClientCollection(request):
 
     tp = request.tp_
@@ -112,6 +132,13 @@ def ClientCollection(request):
     return context
 
 
+# Procedure
+
+# Get list of all fields needed
+# Pick best block to fit loan in 
+# Headers Shit
+# Return shit
+
 
 
 def ledger(request):
@@ -119,44 +146,71 @@ def ledger(request):
     to_date = request.POST.get("to_date")
     search_val = request.POST.get("nom_num")
     audit = request.POST.get("audit") == "on"
-
+    ledger_for = request.POST.get("ledger_for")
 
     person_fields = ('first_name' , 'last_name','father_name' ,'area','mobile_number_1','current_address')
-    display_fields = ('society_account_number','account_opening_date','account_opening_amount','category__name','maturity_date' ,'maturity_amount','scheme__duration','scheme__duration_type' ) 
 
-    print(search_val)
-    if(search_val):
-        collections = client.objects.get(nomination_number = search_val).deposits_table_set.all()       
-        person_details = eval(f'client.objects.filter(nomination_number = search_val).values_list{person_fields}')[0]
-        print(person_details)
-
-        table_head = ' '.join(person_details[:2]) + '<br>'.join( [str(i) for i in person_details[2:]] )
-
-    else:
-        collections = deposits_table.objects.all()
-        table_head = "Showing All Deposits"
-
-    filter_ = f".filter(account_opening_date__range=['{from_date}','{to_date}'])"                 
-    
-     #if audit is true so show only audit
-    filter_ = filter_[:-1] + ', db=True )'if(audit) else filter_
-
-    rows = eval(f"collections{filter_}.values_list{display_fields}")
-
-    m = {}
-    for dp_set in rows:
-        dp = deposits_table.objects.get(society_account_number=dp_set[0])
-        withdrawls_ = dp.withdrawl_entry_set.all()
-        if(withdrawls_):
-            withrawl = withdrawls_[0]
-            m[dp_set] = (f'WD : {withrawl.amount_withdrawl_date}' , f'WA : {withrawl.amount_withdrawl}' , f'BL : {dp.balance}' , f'IN : {dp.interest_collected}', "TP: CASH")
+    ##Loan and Soicety
+    if(ledger_for == "Society"):  
+        display_fields = ('society_account_number','account_opening_date','account_opening_amount','category__name','maturity_date' ,'maturity_amount','scheme__duration','scheme__duration_type' ) 
+        if(search_val):
+            collections = client.objects.get(nomination_number = search_val).deposits_table_set.all()      
+            person_details = eval(f'client.objects.filter(nomination_number = search_val).values_list{person_fields}')[0]
+            table_head = ' '.join(person_details[:2]) + '<br>'.join( [str(i) for i in person_details[2:]] )
         else:
-            m[dp_set] = []
+            collections = deposits_table.objects.all()
+            table_head = "Showing All Deposits"
 
-    print(rows)
+        filter_ = f".filter(account_opening_date__range=['{from_date}','{to_date}'])"                 
+        #if audit is true so show only audit
+        filter_ = filter_[:-1] + ', db=True )'if(audit) else filter_
 
+        rows = eval(f"collections{filter_}.values_list{display_fields}")
+        m = {}
+        for dp_set in rows:
+            dp = deposits_table.objects.get(society_account_number=dp_set[0])
+            withdrawls_ = dp.withdrawl_entry_set.all()
+            if(withdrawls_):
+                withrawl = withdrawls_[0]
+                m[dp_set] = (f'WD : {withrawl.amount_withdrawl_date}' , f'WA : {withrawl.amount_withdrawl}' , f'BL : {dp.balance}' , f'IN : {dp.interest_collected}', "TP: CASH")
+            else:
+                m[dp_set] = []
+
+        # print(rows)
         #add to fuckin context
-    context = {'headers':[i.replace('deposit',"").replace('scheme',"").replace('person',"").replace('finance',"").replace('__',"").replace('_'," ") for i in display_fields]}
+        context = {'headers':[i.replace('deposit',"").replace('scheme',"").replace('person',"").replace('finance',"").replace('__',"").replace('_'," ") for i in display_fields]}
+    
+    else:
+        display_fields = ('finance__loan_account_number','loan_start_date','total','finance__loan_type' ) 
+        if(search_val):
+            collections = client.objects.get(nomination_number = search_val).approved_finance_table_set.all()       
+            person_details = eval(f'client.objects.filter(nomination_number = search_val).values_list{person_fields}')[0]
+            table_head = ' '.join(person_details[:2]) + '<br>'.join( [str(i) for i in person_details[2:]] )
+        else:
+            collections = approved_finance_table.objects.all()
+            table_head = "Showing All Finances"
+
+        filter_ = f".filter(loan_start_date__range=['{from_date}','{to_date}'])"                 
+        #if audit is true so show only audit
+        filter_ = filter_[:-1] + ', db=True )'if(audit) else filter_
+
+        rows = eval(f"collections{filter_}.values_list{display_fields}")
+        m = {}
+        for fc_set in rows:
+            fc = approved_finance_table.objects.get(finance__loan_account_number=fc_set[0])
+            deposits = fc.finance.collection_finance_set.all()
+            if(deposits):
+                dp = deposits[0]
+                m[fc_set] = (f'DD : {dp.loan_emi_received_date}' , f'DA : {dp.loan_emi_received}' , f'P : {dp.penalty}' )
+            else:
+                m[dp_set] = []
+
+        # print(rows)
+        #add to fuckin context
+        context = {'headers':["Finance Account" , "Start Date" , "Total Amount" , "Loan Type"]}
+    
+    
+    
     context['ledger'] = m
     context['title'] = table_head
     # print(context['rows'])
@@ -669,6 +723,9 @@ def report(request,report_type):
     
     elif("mycashreport"==report_type):
         form_ = CashBook
+
+    elif("dividendreport"==report_type):
+        form_ = DividendReport
 
     if request.method == 'POST':
         form = form_(request.POST)

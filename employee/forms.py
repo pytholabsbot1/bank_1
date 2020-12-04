@@ -32,7 +32,7 @@ class AgentCollectionReport(forms.Form):
         filter_val = forms.ModelChoiceField(queryset = DepositChoice.objects.all() , required=False)
 
         all_ = forms.BooleanField(required=False)
-        audit = forms.BooleanField(required=False ,label='-' )
+        audit = forms.BooleanField(required=False , initial = True ,label='-' )
 
 class ClientCollectionReport(forms.Form):
         from_date = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))
@@ -41,25 +41,31 @@ class ClientCollectionReport(forms.Form):
         search_val = forms.CharField(label='Nomination Number', max_length=16 , required=False)
         
         all_ = forms.BooleanField(required=False)
-        audit = forms.BooleanField(required=False ,label='-' )
+        audit = forms.BooleanField(required=False , initial = True ,label='-' )
 
 class Ledger(forms.Form):
         from_date = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))
         to_date = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))
 
         nom_num = forms.CharField(label='Nomination Number', max_length=100 , required=False)
-        audit = forms.BooleanField(required=False ,label='-' )
-
+        Ledger_for = forms.ChoiceField(choices = ( ("Society","Society") ,("Loan","Loan") ) , required=False)
+        audit = forms.BooleanField(required=False , initial = True ,label='-' )
+       
 class MajorReport(forms.Form):
         from_date = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))
         to_date = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))
         search = forms.CharField(required=False, widget=forms.Select(choices = [('', 'Select'),]))
-        audit = forms.BooleanField(required=False ,label='-' )
+        audit = forms.BooleanField(required=False , initial = True ,label='-' )
 
 class CashBook(forms.Form):
         from_date = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))
         to_date = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))
-        audit = forms.BooleanField(required=False ,label='-' )
+        audit = forms.BooleanField(required=False , initial = True ,label='-' )
+
+class DividendReport(forms.Form):
+        financial_year = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))
+        percentage = forms.IntegerField(required=False)
+        audit = forms.BooleanField(required=False , initial = True ,label='-' )
         
 class EmpReport(forms.Form):
         from_date = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))
@@ -76,7 +82,7 @@ class DailyCash(forms.Form):
         to_date = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))
         search = forms.CharField(required=False, widget=forms.Select(choices = [('', 'Select'),]))
         all_ = forms.BooleanField(required=False)
-        audit = forms.BooleanField(required=False ,label='-' )
+        audit = forms.BooleanField(required=False , initial = True ,label='-' )
 
 class UpcomingMaturity(forms.Form):
         from_date = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))

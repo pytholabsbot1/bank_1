@@ -18,11 +18,17 @@ def custom_titled_filter(title):
     return Wrapper
 
 
-fields_basic = (('nomination_number','entry_date'),('first_name','last_name'),('father_name', 'mother_name'),('current_address','permanent_address'),('village','area'),('age','gender','date_of_birth'),
+fields_basic = (('nomination_number','entry_date' , "status"),('first_name','last_name'),('father_name', 'mother_name'),('current_address','permanent_address'),('village','area'),('age','gender','date_of_birth'),
                ('district','state','country'),('city','pincode','email_id'),('mobile_number_1','mobile_number_2','landline_number'),
                ('photograph','signature','thumb_impression'))
 
 fields_id = (('id_type','id_number'),('id_photograph1','id_photograph2'),('id_photograph3','id_photograph4'))
+
+
+class AdminDetails_Ad(admin.ModelAdmin):
+    raw_id_fields = ('user_account',)
+
+
 
 class GaurantorAdmin(admin.ModelAdmin):
 
@@ -374,6 +380,7 @@ class VoucherAdmin(admin.ModelAdmin):
     
     def get_changeform_initial_data(self, request):
         print("---->> ",request.GET)
+        
         b = Balance.objects.all()[0]
         return {"curr_cash":b.cash , "curr_bank": b.bank}
 
@@ -383,7 +390,8 @@ class VoucherAdmin(admin.ModelAdmin):
         )
     def get_form(self, request, obj=None, **kwargs):
         
-        v_head = ('voucher_number' ,'updated_cash' , 'updated_bank') if( request.user.is_superuser ) else ()
+        # v_head = ('voucher_number' ,'updated_cash' , 'updated_bank') if( request.user.is_superuser ) else ()
+        v_head = ()
 
         #Field Groups
         self.fieldsets = (

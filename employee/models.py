@@ -12,6 +12,7 @@ from employee.emp_models.model_comp import *
 from employee.emp_models.model_roles import *
 from cropperjs.models import CropperImageField
 
+
 def get_deposit_billnum():
     objs = len(collection_deposit.objects.all())+1
     return objs
@@ -562,6 +563,7 @@ class Voucher(models.Model):
     date = models.DateField(default = timezone.now)
     
     db = models.BooleanField(default=True)
+    custom_num = models.BooleanField(default=False)
      
     transact_type = models.CharField(max_length=50,choices=TRANSACT_TYPE,default="Cr")
     voucher_type = models.CharField(max_length=50,choices=VOUCHER_TYPE,default="Journal")
@@ -610,19 +612,22 @@ class Voucher(models.Model):
 
     def clean(self):
         
+        b = Balance.objects.all()[0]
+        self.curr_bank = b.bank
+        self.curr_cash =  b.cash
+        
+        notes = [i.strip() for i in 'n_10, n_20 , n_50, n_100 , n_200 , n_500,n_2000 ,c_1 , c_2 , c_5, c_10'.split(',')]
+
+        cr = self.transact_type=="Cr" 
+
         if(not self.pk):
-            b = Balance.objects.all()[0]
+            
             v_num = str(len(Voucher.objects.filter(voucher_type = self.voucher_type).all()) + 1)
-            v_num = self.voucher_type[0] + "0"*(5-len(v_num)) + v_num
+            v_num = self.voucher_type[0] + "0"*(5-len(v_num)) + v_num 
 
-            self.voucher_number = v_num
-            self.curr_bank = b.bank
-            self.curr_cash =  b.cash
-
-            cr = self.transact_type=="Cr"  
+            self.voucher_number = self.voucher_number if(self.custom_num) else v_num
 
             #validations
-            notes = [i.strip() for i in 'n_10, n_20 , n_50, n_100 , n_200 , n_500,n_2000 ,c_1 , c_2 , c_5, c_10'.split(',')]
 
             if(self.voucher_type!="Contra"):
                 b.cash += self.amount if(cr) else -self.amount
@@ -687,6 +692,65 @@ class Voucher(models.Model):
 
             self.updated_cash = b.cash
             self.updated_bank = b.bank
+        
+        #IF Updating existing voucher
+        else:
+
+            old_version = Voucher.objects.get(id = self.pk)
+            diff_amt = self.amount - old_version.amount 
+            p_vchrs = Voucher.objects.filter(id__gt = self.pk) 
+
+            note_diff = [ getattr(self,n) - getattr(old_version,n) for n in notes]
+            for i, n_diff in enumerate(note_diff):
+                exec( f"b.{notes[i]} += {n_diff}" )
+
+            if(self.voucher_type=="Contra"):
+                if(cr):
+                    self.updated_bank += diff_amt
+                    self.updated_cash -= diff_amt
+                    b.cash -= diff_amt
+                    b.bank += diff_amt
+
+                    for v in p_vchrs:
+                        exec(f"v.curr_cash -= diff_amt")
+                        exec(f"v.updated_cash -= diff_amt")
+                        exec(f"v.curr_bank += diff_amt")
+                        exec(f"v.updated_bank += diff_amt")
+                        v.save()
+
+                else:
+                    self.updated_bank -= diff_amt
+                    self.updated_cash += diff_amt
+                    b.cash += diff_amt
+                    b.bank -= diff_amt
+
+                    for v in p_vchrs:
+                        exec(f"v.curr_cash += diff_amt")
+                        exec(f"v.updated_cash += diff_amt")
+                        exec(f"v.curr_bank -= diff_amt")
+                        exec(f"v.updated_bank -= diff_amt")
+                        v.save()
+                
+            else:
+                if(cr):
+                    self.updated_cash += diff_amt
+                    b.cash += diff_amt
+
+                    for v in p_vchrs:
+                        exec(f"v.curr_cash += diff_amt")
+                        exec(f"v.updated_cash += diff_amt")
+                        v.save()
+
+                else:
+                    self.updated_cash -= diff_amt
+                    b.cash -= diff_amt
+
+                    for v in p_vchrs:
+                        exec(f"v.curr_cash -= diff_amt")
+                        exec(f"v.updated_cash -= diff_amt")
+                        v.save()
+            
+            b.save()
 
         # super(Voucher, self).save(*args, **kwargs)
 
@@ -887,3 +951,4 @@ class DocumentPrint(models.Model):
     doc_for = models.CharField(max_length=200, null=True)
     printed_by = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True, editable=False, null=False, blank=False)
+

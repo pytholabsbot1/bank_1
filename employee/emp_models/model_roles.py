@@ -107,7 +107,8 @@ class client(Basic_Details):
 # --------------------------account holder info ----------------------------
     account_nominee_name = models.CharField(max_length= 100,null= True)
     nominee_relation = models.ForeignKey(Relation_Choice , to_field='relation_choice',related_name='client_relation_choice',on_delete=models.CASCADE , blank=True, null=True)
-    
+    status =  models.BooleanField(default=True)
+
  # --------------------------guardian data----------------------------
     minor_checkbox = models.BooleanField(default=False)
     guardian_name = models.CharField(max_length= 100,blank =True, null= True)
