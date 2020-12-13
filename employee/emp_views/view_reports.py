@@ -68,7 +68,7 @@ def AgentCollection(request,tp):
         
 
 def dividendreport(request):
-    f_year = datetime.date.fromisoformat(request.POST.get("financial_year"))
+    f_year = dt.datetime.strptime(request.POST.get("financial_year"),"%Y-%m-%d")
     p = request.POST.get("percentage")
     audit = request.POST.get("audit") == "on"
 
