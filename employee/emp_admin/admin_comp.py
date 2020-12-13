@@ -27,7 +27,7 @@ fields_id = (('id_type','id_number'),('id_photograph1','id_photograph2'),('id_ph
 
 class AdminDetails_Ad(admin.ModelAdmin):
     raw_id_fields = ('user_account',)
-
+    list_display = ('user_account',)
 
 
 class GaurantorAdmin(admin.ModelAdmin):

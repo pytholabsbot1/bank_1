@@ -1,3 +1,14 @@
+## read only error fix
+sudo chown vaqas db.sqlite3
+
+## git shit
+<!-- client -->
+git push origin master
+
+<!-- server -->
+git reset --hard HEAD 
+sudo git pull
+
 ## VM CONFIG : ubuntu 18 LTS
 
 os.system('sudo -i -u postgres pg_dump -Fc  --dbname=postgresql://vaqas:kdsfmsbAAMNVJHFHVjvhjhfks8736587365smdnbmfnsdbf2836487sdjbfjsd@127.0.0.1:5432/banking_data > /home/vaqas/backup.pgdump')
