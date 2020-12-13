@@ -182,7 +182,7 @@ def ledger(request):
         context = {'headers':[i.replace('deposit',"").replace('scheme',"").replace('person',"").replace('finance',"").replace('__',"").replace('_'," ") for i in display_fields]}
     
     else:
-        display_fields = ('finance__loan_account_number','loan_start_date','total','finance__loan_type' ) 
+        display_fields = ('finance__loan_account_number','loan_start_date','total','finance__loan_type__name' ) 
         if(search_val):
             collections = client.objects.get(nomination_number = search_val).approved_finance_table_set.all()       
             person_details = eval(f'client.objects.filter(nomination_number = search_val).values_list{person_fields}')[0]
@@ -199,12 +199,12 @@ def ledger(request):
         m = {}
         for fc_set in rows:
             fc = approved_finance_table.objects.get(finance__loan_account_number=fc_set[0])
-            deposits = fc.finance.collection_finance_set.all()
+            deposits = fc.collection_finance_set.all()
             if(deposits):
                 dp = deposits[0]
                 m[fc_set] = (f'DD : {dp.loan_emi_received_date}' , f'DA : {dp.loan_emi_received}' , f'P : {dp.penalty}' )
             else:
-                m[dp_set] = []
+                m[fc_set] = []
 
         # print(rows)
         #add to fuckin context

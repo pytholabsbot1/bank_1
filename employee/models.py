@@ -70,7 +70,7 @@ class finance_table(models.Model):
     emi_type = models.CharField(max_length=100,null = True,choices=EMI_TYPE_CHOICES)
     applied_date = models.DateField(default=timezone.now)
 
-    gaurantor = models.ForeignKey(Gaurantor , null=True,on_delete=models.CASCADE)
+    gaurantor = models.ForeignKey(Gaurantor , null=True, on_delete=models.CASCADE)
 
     stamp_photograph = CropperImageField(upload_to='users/images')
     cheque_photograph = CropperImageField(upload_to='users/images')
