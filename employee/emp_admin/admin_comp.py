@@ -377,6 +377,8 @@ class VoucherAdmin(admin.ModelAdmin):
     list_display = ('voucher_number' , 'account_number', 'date',"created_time" ,'voucher_type' ,'title','amount','transact_type')
     
 
+    def response_post_save_add(self, request, obj):
+        return HttpResponseRedirect('/bank/transit/voucher/'+ str(obj.id))
     
     def get_changeform_initial_data(self, request):
         print("---->> ",request.GET)

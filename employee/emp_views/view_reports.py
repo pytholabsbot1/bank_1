@@ -146,7 +146,8 @@ def ledger(request):
     to_date = request.POST.get("to_date")
     search_val = request.POST.get("nom_num")
     audit = request.POST.get("audit") == "on"
-    ledger_for = request.POST.get("ledger_for")
+    ledger_for = request.POST.get("Ledger_for")
+    print(ledger_for)
 
     person_fields = ('first_name' , 'last_name','father_name' ,'area','mobile_number_1','current_address')
 

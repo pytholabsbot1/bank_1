@@ -210,6 +210,28 @@ def id_card(request,nom_num):
 
 	# return HttpResponse(page)
 
+
+# @login_required
+def voucher_reciept(request,v_id):
+	v = Voucher.objects.get(id=v_id)
+	if not print_counter(request.user, "voucher_reciept", v_id):
+		return HttpResponse("Not Authorized", status=403)
+	
+	img3 = open("media/docs/header.png","rb").read()
+	encoded_header = base64.b64encode(img3).decode()
+
+	context = {'v':v ,'header_data': encoded_header}
+	page = render(request,'employee/reciepts/voucher.html',context=context)
+	page = page.content.decode('utf-8')
+
+	
+	pdf = pdfkit.from_string(page, False , options={'orientation':'landscape', 'page-height':'216', 'page-width':'324'})
+	return HttpResponse(pdf, content_type='application/pdf')
+
+	# return HttpResponse(page)
+
+
+
 	
 @login_required
 def deposit_pdf(request,nom_num):

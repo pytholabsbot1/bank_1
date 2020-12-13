@@ -23,10 +23,12 @@ urlpatterns = [
     # path("clientcoll_report/<str:tp>",views.ClientCollection,name="ressp"),
     # path("agentcoll_report/<str:tp>",views.AgentCollection,name="ressp"),
    
+   #### Print  Reciept Urls --- >
     path("cash_reciept/<str:bill_num>",views.cash_coll,name="ble"),
     path("pdf/<str:nom_num>",views.pdf,name="ble"),
     # path("ledger/",views.ledger,name="ble"),
     # path("cashbook/",views.cashbook,name="ble"),
+    path("voucher/<str:v_id>",views.voucher_reciept,name="ble"),
     path("noc_pdf/<str:fc_num>",views.noc,name="ble"),
     path("id_card/<str:nom_num>",views.id_card,name="ble"),
     path("withdrawl/<str:num>",views.withdrawl,name="ble"),

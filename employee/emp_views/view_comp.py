@@ -37,6 +37,9 @@ def tansition(request , tp ,nom_num):
 	elif(tp == 'document'):
 		url = f'/bank/document/{nom_num}'
 
+	elif(tp == 'voucher'):
+		url = f'/bank/voucher/{nom_num}'
+
 	elif(tp == 'financecollection'):
 		url = f'/bank/financecollection/{nom_num}'
 
