@@ -153,7 +153,7 @@ def ledger(request):
 
     ##Loan and Soicety
     if(ledger_for == "Society"):  
-        display_fields = ('society_account_number','account_opening_date','account_opening_amount','category__name','maturity_date' ,'maturity_amount','scheme__duration','scheme__duration_type' ) 
+        display_fields = ('person__nomination_number','society_account_number','account_opening_date','account_opening_amount','category__name','maturity_date' ,'maturity_amount','scheme__duration','scheme__duration_type' ) 
         if(search_val):
             collections = client.objects.get(nomination_number = search_val).deposits_table_set.all()      
             person_details = eval(f'client.objects.filter(nomination_number = search_val).values_list{person_fields}')[0]
@@ -169,9 +169,9 @@ def ledger(request):
         rows = eval(f"collections{filter_}.values_list{display_fields}")
         m = {}
         for dp_set in rows:
-            dp = deposits_table.objects.get(society_account_number=dp_set[0])
-            withdrawls_ = dp.withdrawl_entry_set.all()
-            if(withdrawls_):
+            dp = deposits_table.objects.filter(society_account_number=dp_set[0])
+            if(dp and dp.withdrawl_entry_set.all()):
+                withdrawls_ = dp.withdrawl_entry_set.all()
                 withrawl = withdrawls_[0]
                 m[dp_set] = (f'WD : {withrawl.amount_withdrawl_date}' , f'WA : {withrawl.amount_withdrawl}' , f'BL : {dp.balance}' , f'IN : {dp.interest_collected}', "TP: CASH")
             else:
@@ -182,9 +182,9 @@ def ledger(request):
         context = {'headers':[i.replace('deposit',"").replace('scheme',"").replace('person',"").replace('finance',"").replace('__',"").replace('_'," ") for i in display_fields]}
     
     else:
-        display_fields = ('finance__loan_account_number','loan_start_date','total','finance__loan_type__name' ) 
+        display_fields = ('finance__person__nomination_number','finance__loan_account_number','loan_start_date','total','finance__loan_type__name' ) 
         if(search_val):
-            collections = client.objects.get(nomination_number = search_val).approved_finance_table_set.all()       
+            collections = approved_finance_table.objects.filter(finance__person__nomination_number=search_val)       
             person_details = eval(f'client.objects.filter(nomination_number = search_val).values_list{person_fields}')[0]
             table_head = ' '.join(person_details[:2]) + '<br>'.join( [str(i) for i in person_details[2:]] )
         else:
@@ -198,17 +198,17 @@ def ledger(request):
         rows = eval(f"collections{filter_}.values_list{display_fields}")
         m = {}
         for fc_set in rows:
-            fc = approved_finance_table.objects.get(finance__loan_account_number=fc_set[0])
-            deposits = fc.collection_finance_set.all()
-            if(deposits):
-                dp = deposits[0]
+            fc = approved_finance_table.objects.filter(finance__loan_account_number=fc_set[1])
+            if(len(fc) and fc[0].collection_finance_set.last() ):
+                dp= fc[0].collection_finance_set.last()
+                dp = deposits
                 m[fc_set] = (f'DD : {dp.loan_emi_received_date}' , f'DA : {dp.loan_emi_received}' , f'P : {dp.penalty}' )
             else:
                 m[fc_set] = []
 
         # print(rows)
         #add to fuckin context
-        context = {'headers':["Finance Account" , "Start Date" , "Total Amount" , "Loan Type"]}
+        context = {'headers':["Nomination Number","Finance Account" , "Start Date" , "Total Amount" , "Loan Type"]}
     
     
     

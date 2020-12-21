@@ -21,6 +21,7 @@ from django.conf.urls import url, include
 from django.conf import settings
 from django.views.static import serve
 from django.conf import settings
+from employee.views import client_report
 from django.conf.urls.static import static
 from accounts.decorators import *
 
@@ -28,7 +29,8 @@ from accounts.decorators import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('bank/', include('employee.urls')),
-    url(r'^$', unauthenticated_user(auth_views.LoginView.as_view(template_name='accounts/log.html' , extra_context={'title':"Login", 'pretext':'Already have ', 'url':'register' })), name='login'),
+    url(r'^$', client_report),
+    url('login/', unauthenticated_user(auth_views.LoginView.as_view(template_name='accounts/log.html' , extra_context={'title':"Login", 'pretext':'Already have ', 'url':'register' })), name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(template_name='accounts/logout.html'),name='logout'),
     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
 

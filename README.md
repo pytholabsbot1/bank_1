@@ -203,7 +203,7 @@ Adding ssl
 
 follow -> https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04
 
-# sudo certbot --nginx -d pytholabs.org -d www.pytholabs.org
+# sudo certbot --nginx -d siddhicooperative.com -d www.siddhicooperative.com
 
 # sudo certbot certonly --standalone --preferred-challenges http -d pytholabs.org
 # sudo ls /etc/letsencrypt/live/pytholabs.org

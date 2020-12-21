@@ -65,7 +65,8 @@ class employee_interview(Basic_Details):
     interview_date = models.DateField(default=timezone.now)
 
     joined = models.BooleanField(default=False)
-
+    status =  models.BooleanField(default=True)
+    
     referal_name = models.CharField(max_length= 100,blank =True, null= True)
     referal_father = models.CharField(max_length= 100,blank =True, null= True)
     referal_mobile_number = models.CharField(max_length= 100, null = True ,blank =True)
