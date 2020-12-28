@@ -448,13 +448,13 @@ def emp_report(request):
     from_date = request.POST.get("from_date")
     to_date = request.POST.get("to_date")
     tp = request.POST.get("filter_val")
-    context = {'headers':['bill no','Payment', 'Date' , 'Type']}
+    context = {'headers':['bill no','Account no.' , 'Name' ,'Area' ,'Payment', 'Date' , 'Type']}
     
     e = employee_interview.objects.get(nomination_number= request.user.username)
     if(tp=="Deposits"):
-	    collections = [ [dp.bill_no , round(dp.payment_received , 1), dp.payment_received_date ,'Deposit'] for dp in e.employee_interview.collection_deposit_set.filter(payment_received_date=timezone.now())]
+	    collections = [ [dp.bill_no , dp.deposit.society_account_number , " ".join([dp.deposit.person.first_name, dp.deposit.person.last_name]) , dp.deposit.person.area ,round(dp.payment_received , 1), dp.payment_received_date ,'Deposit'] for dp in e.employee_interview.collection_deposit_set.filter(payment_received_date=timezone.now())]
     else:
-	    collections = [ [fc.bill_no , round(fc.loan_emi_received ,1) , fc.loan_emi_received_date , 'Finance'] for fc in e.employee_interview.collection_finance_set.filter(loan_emi_received_date=timezone.now())]
+	    collections = [ [fc.bill_no , ' '.join([fc.finance.finance.person.first_name , fc.finance.finance.person.last_name]) , fc.finance.finance.person.area , round(fc.loan_emi_received ,1) , fc.loan_emi_received_date , 'Finance'] for fc in e.employee_interview.collection_finance_set.filter(loan_emi_received_date=timezone.now())]
 
    
     context['rows'] = collections 
@@ -657,6 +657,10 @@ def mycashreport(request):
     cash_collections = cash_collection.objects.filter(date__range=[from_date ,to_date], employee=e)
     for c in cash_collections:
         payment_string = ""
+        if c.c_1:payment_string += "<li>C " + str(c.c_1) + " * 1 = " + str(c.c_1 * 1) + "</li>"
+        if c.c_2:payment_string += "<li>C " + str(c.c_2) + " * 2 = " + str(c.c_2 * 2) + "</li>"
+        if c.c_5:payment_string += "<li>C " + str(c.c_5) + " * 5 = " + str(c.c_5 * 5) + "</li>"
+        if c.c_10:payment_string += "<li>C " + str(c.c_10) + " * 10 = " + str(c.c_10 * 10) + "</li>"
         if c.n_10:payment_string += "<li>" + str(c.n_10) + " * 10 = " + str(c.n_10 * 10) + "</li>"
         if c.n_20:payment_string += "<li>" + str(c.n_20) + " * 20 = " + str(c.n_20 * 20) + "</li>"
         if c.n_50:payment_string += "<li>" + str(c.n_50) + " * 50 = " + str(c.n_50 * 50) + "</li>"

@@ -110,9 +110,9 @@ class finance_table(models.Model):
             raise forms.ValidationError({'expected_amount': ["Expected amount cannot be greater than demanded amount"]})
         
         if self.gaurantor:
-            if self.gaurantor.expected_amount < (self.gaurantor.max_amount + self.expected_amount):
+            if self.gaurantor.expected_amount > (self.gaurantor.max_amount):
                 raise forms.ValidationError({'gaurantor': ["Gaurantor exceeds the total amount authorized. Please contact admin"]})
-        
+
         if self.person:
             print(self)
             loans = finance_table.objects.all()

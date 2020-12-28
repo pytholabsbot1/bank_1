@@ -16,39 +16,39 @@ import json
 
 @login_required
 def tansition(request , tp ,nom_num):
-	if(tp=='fc'):
+	if(tp in ['fc' , 'Loan QR Code'] ):
 		url = f'/bank/fc_pdf/{nom_num}'
 
-	elif(tp=='client'):
+	elif(tp in ['client' , 'Nomination Reciept']):
 		url = f'/bank/client_pdf/{nom_num}'
 
-	elif(tp=='id_card'):
+	elif(tp in ['id_card' , 'EMP_ID_Card']):
 		url = f'/bank/id_card/{nom_num}'
 
-	elif(tp=='noc'):
+	elif(tp in ['noc' , 'Loan NOC']):
 		url = f'/bank/noc_pdf/{nom_num}'
 
-	elif(tp=='cash_col'):
+	elif(tp in ['cash_col' , 'EMP Daily Cash']):
 		url = f'/bank/cash_reciept/{nom_num}'
 
-	elif(tp=='withdrawl'):
+	elif(tp in ['withdrawl' ,'Maturity Slip']):
 		url = f'/bank/withdrawl/{nom_num}'
 	
-	elif(tp == 'document'):
+	elif(tp  in  ['Upload Documents', 'document']):
 		url = f'/bank/document/{nom_num}'
 
 	elif(tp == 'voucher'):
 		url = f'/bank/voucher/{nom_num}'
 
-	elif(tp == 'financecollection'):
+	elif(tp  in  ['Monthly/OT Reciept', 'financecollection']):
 		url = f'/bank/financecollection/{nom_num}'
 
-	elif('dp' in tp):
-		if("FD" in tp):
-			url = f'/bank/fd_pdf/{nom_num}'	
-		else:
-			url = f'/bank/deposit_pdf/{nom_num}'
-           
+	elif( tp in ['dp' ,'Society QR Code']):
+		url = f'/bank/deposit_pdf/{nom_num}'
+    
+	elif(tp=='FD Bond' or "FD" in tp):
+		url = f'/bank/fd_pdf/{nom_num}'	
+
 	else:
 		print(tp ,' ---- none')
 		url = '/bank/'
@@ -217,7 +217,7 @@ def tot_coll(request):
 @login_required
 def get_data_by_document(request, doc_type):
 	tp = doc_type
-	if(tp=='fc') or (tp=='noc'):
+	if("Loan" in tp):
 		data = approved_finance_table.objects.all()
 		dlist_1 = []
 		dlist_2 = []
@@ -232,6 +232,23 @@ def get_data_by_document(request, doc_type):
 			'dlist_3': dlist_3
 		}
 		url = f'/bank/fc_pdf/'
+
+
+	elif(tp=="Society QR Code" or tp=="dp"):
+		data = deposits_table.objects.all()
+		dlist_1 = []
+		dlist_2 = []
+		dlist_3 = []
+		for x in data:
+			dlist_1.append(x.society_account_number)
+			dlist_2.append(x.person.first_name + " " + x.person.last_name)
+			dlist_3.append(x.person.mobile_number_1)
+		data_object = {
+			'dlist_1': dlist_1,
+			'dlist_2': dlist_2,
+			'dlist_3': dlist_3
+		}
+		url = f'/bank/deposit_pdf/'
 	
 	elif(tp=='all_loans'):
 		data = finance_table.objects.all()
@@ -249,7 +266,7 @@ def get_data_by_document(request, doc_type):
 		}
 		url = f'/bank/fc_pdf/'
 
-	elif(tp=='client'):
+	elif(tp=='Nomination Reciept'):
 		data = client.objects.all()
 		dlist_1 = []
 		dlist_2 = []
@@ -265,7 +282,7 @@ def get_data_by_document(request, doc_type):
 		}
 		url = f'/bank/client_pdf/'
 
-	elif(tp=='id_card'):
+	elif(tp=='EMP_ID_Card'):
 		data = employee_joining.objects.all()
 		dlist_1 = []
 		dlist_2 = []
@@ -281,7 +298,7 @@ def get_data_by_document(request, doc_type):
 		}
 		url = f'/bank/id_card/'
 
-	elif(tp=='cash_col'):
+	elif(tp=='EMP Daily Cash'):
 		data = cash_collection.objects.all()
 		dlist_1 = []
 		dlist_2 = []
@@ -297,7 +314,7 @@ def get_data_by_document(request, doc_type):
 		}
 		url = f'/bank/cash_reciept/'
 
-	elif(tp=='withdrawl'):
+	elif(tp=='Maturity Slip'):
 		data = withdrawl_entry.objects.all()
 		dlist_1 = []
 		dlist_2 = []
@@ -313,7 +330,7 @@ def get_data_by_document(request, doc_type):
 		}
 		url = f'/bank/withdrawl/'
 	
-	elif(tp == 'document'):
+	elif(tp == 'Upload Documents'):
 		data = Documents.objects.all()
 		dlist_1 = []
 		dlist_2 = []
@@ -329,7 +346,7 @@ def get_data_by_document(request, doc_type):
 		}
 		url = f'/bank/document/'
 
-	elif(tp == 'financecollection'):
+	elif(tp == 'Monthly/OT Reciept'):
 		data = collection_finance.objects.all()
 		dlist_1 = []
 		dlist_2 = []
@@ -345,38 +362,24 @@ def get_data_by_document(request, doc_type):
 		}
 		url = f'/bank/financecollection/'
 
-	elif('dp' in tp):
-		if("FD" in tp):
-			data = deposits_table.objects.all()
-			dlist_1 = []
-			dlist_2 = []
-			dlist_3 = []
-			for x in data:
-				dlist_1.append(x.society_account_number)
-				dlist_2.append(x.person.first_name + " " + x.person.last_name)
-				dlist_3.append(x.person.mobile_number_1)
-			data_object = {
-				'dlist_1': dlist_1,
-				'dlist_2': dlist_2,
-				'dlist_3': dlist_3
-			}
-			url = f'/bank/fd_pdf/'	
-		else:
-			data = deposits_table.objects.all()
-			dlist_1 = []
-			dlist_2 = []
-			dlist_3 = []
-			for x in data:
-				dlist_1.append(x.society_account_number)
-				dlist_2.append(x.person.first_name + " " + x.person.last_name)
-				dlist_3.append(x.person.mobile_number_1)
-			data_object = {
-				'dlist_1': dlist_1,
-				'dlist_2': dlist_2,
-				'dlist_3': dlist_3
-			}
-			url = f'/bank/deposit_pdf/'
-           
+	elif(tp=="FD Bond"):
+		data = deposits_table.objects.all()
+		dlist_1 = []
+		dlist_2 = []
+		dlist_3 = []
+		for x in data:
+			dlist_1.append(x.society_account_number)
+			dlist_2.append(x.person.first_name + " " + x.person.last_name)
+			dlist_3.append(x.person.mobile_number_1)
+		data_object = {
+			'dlist_1': dlist_1,
+			'dlist_2': dlist_2,
+			'dlist_3': dlist_3
+		}
+		url = f'/bank/fd_pdf/'	
+	
+
+		
 	else:
 		print(tp ,' ---- none')
 		url = '/bank/'

@@ -251,16 +251,16 @@ def check_collection(request):
 
 def print_documents(request):
 	doc_list = [
-		'fc',
-		'client',
-		'id_card',
-		'noc',
-		'cash_col',
-		'withdrawl',
-		'document',
-		'financecollection',
-		'dp_pdf',
-		'FD_pdf',
+		'Loan QR Code',
+		'Society QR Code',
+		'Nomination Reciept',
+		'EMP_ID_Card',
+		'Loan NOC',
+		'EMP Daily Cash',
+		'Maturity Slip',
+		'Upload Documents',
+		'Monthly/OT Reciept',
+		'FD Bond',
 	]
 	context={'docs': doc_list}
 
