@@ -26,6 +26,9 @@ sudo systemctl start gunicorn
 git config --global credential.helper store
 
 
+# For entity too large error nginx
+https://www.cyberciti.biz/faq/linux-unix-bsd-nginx-413-request-entity-too-large/
+
 
 # banking_dump
 

@@ -29,6 +29,7 @@ class AgentCollectionReport(forms.Form):
         to_date = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))
 
         search_val = forms.CharField(label='Nomination Number', max_length=16,required=False)
+        account_val = forms.CharField(label='Account Number', max_length=16 , required=False)
         filter_val = forms.ModelChoiceField(queryset = DepositChoice.objects.all() , required=False)
 
         all_ = forms.BooleanField(required=False)
@@ -39,7 +40,8 @@ class ClientCollectionReport(forms.Form):
         to_date = forms.DateField(widget=forms.TextInput(attrs={ 'class':'datepicker' }))
 
         search_val = forms.CharField(label='Nomination Number', max_length=16 , required=False)
-        
+        account_val = forms.CharField(label='Account Number', max_length=16 , required=False)
+
         all_ = forms.BooleanField(required=False)
         audit = forms.BooleanField(required=False , initial = True ,label='-' )
 

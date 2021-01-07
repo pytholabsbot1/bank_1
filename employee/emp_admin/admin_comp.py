@@ -18,7 +18,7 @@ def custom_titled_filter(title):
     return Wrapper
 
 
-fields_basic = (('nomination_number','entry_date' , "status"),('first_name','last_name'),('father_name', 'mother_name'),('current_address','permanent_address'),('village','area'),('age','gender','date_of_birth'),
+fields_basic = (('nomination_number','entry_date' , "status"),"branch",('first_name','last_name'),('father_name', 'mother_name'),('current_address','permanent_address'),('village','area'),('age','gender','date_of_birth'),
                ('district','state','country'),('city','pincode','email_id'),('mobile_number_1','mobile_number_2','landline_number'),
                ('photograph','signature','thumb_impression'))
 
@@ -202,9 +202,9 @@ class Collection_Cashier(admin.ModelAdmin):
     exclude = ('employee',)
     search_fields = ('bill_number',)
     list_display = ('bill_number',"created_time",'date','employee','total_society_deposit','total_loan_deposit','total_cash_collection','approved')
-    readonly_fields = ("bill_number" ,)
+    readonly_fields = ("bill_number" ,) 
+
     def get_form(self, request, obj=None, **kwargs):
-        
         m_fields = ('bill_number','date') 
         
         if request.user.has_perm('change_cash_collection'):
@@ -239,6 +239,13 @@ class Collection_Cashier(admin.ModelAdmin):
         return HttpResponseRedirect('/bank/')
 
     def response_post_save_change(self, request, obj):
+        # old_obj = cash_collection.objects.get( id = obj.id )
+        # f_ = [f.name for f in obj._meta.get_fields() if(f.name not in ["approved" ,'emp_payments'])]
+        # for f in f_:
+        #     print(getattr(old_obj , f) != getattr( obj , f))
+        #     if( getattr(old_obj , f) != getattr( obj , f)):
+        #         return HttpResponseRedirect('/bank')
+
         obj.tot_payment = sum([i[0] for i in obj.emp_payments_set.all().values_list('amount')])
         obj.tot_reciept = obj.total_society_deposit + obj.total_loan_deposit
         obj.save()
@@ -339,7 +346,7 @@ class withdrawl(admin.ModelAdmin):
      #Field Groups
     fieldsets = (
         ("Info", {
-           'fields': ('image_tag','sign_tag','bill_no','amount_withdrawl_date','category','society_account')
+           'fields': ('image_tag','sign_tag','bill_no','amount_withdrawl_date','category','society_account','agent')
         }),
         ('Details', {
             'fields': ('holder_name','available_amount','amount_withdrawl',

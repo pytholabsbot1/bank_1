@@ -129,21 +129,37 @@ def wd_componets(request , acc_num):
 def render_table(request, tp):
 
 	e = employee_interview.objects.get(nomination_number= request.user.username)
-	deposit_collections = [ [dp.bill_no , round(dp.payment_received , 1), dp.payment_received_date ,'Deposit'] for dp in e.employee_interview.collection_deposit_set.filter(payment_received_date=timezone.now())]
 
-	finance_collections = [ [fc.bill_no , round(fc.loan_emi_received ,1) , fc.loan_emi_received_date , 'Finance'] for fc in e.employee_interview.collection_finance_set.filter(loan_emi_received_date=timezone.now())]
+	deposit_collections = []
+	dp_attrs = ['bill_no' , 'payment_received_date' ,'deposit.society_account_number' , 'deposit.person.nomination_number' ,'deposit.person.first_name','deposit.person.last_name' , 'payment_received' , 'deposit.scheme.name' ] 
+	# deposit_collections = [ [dp.bill_no ,  ,round(dp.payment_received , 1), dp.payment_received_date ,'Deposit'] for dp in e.employee_interview.collection_deposit_set.filter(payment_received_date=timezone.now())]
+	for dp in e.employee_interview.collection_deposit_set.filter(payment_received_date=timezone.now()):
+		d_ = []
+		for a in dp_attrs:
+			exec(f"d_.append(dp.{a})")
+		deposit_collections.append(d_)
+
+
+	finance_collections = [ [fc.bill_no , fc.finance.finance.loan_type , round(fc.loan_emi_received ,1) , fc.loan_emi_received_date , 'Finance'] for fc in e.employee_interview.collection_finance_set.filter(loan_emi_received_date=timezone.now())]
+	finance_collections = []
+	fc_attrs = ['bill_no' , 'payment_received_date' ,'finance.finance.loan_account_number' , 'finance.finance.person.nomination_number' ,'finance.finance.person.first_name','finance.finance.person.last_name' , 'payment_received' , 'finance.finance.loan_type' ] 
+	for fc in e.employee_interview.collection_finance_set.filter(loan_emi_received_date=timezone.now()):
+		d_ = []
+		for a in fc_attrs:
+			exec(f"finance_collections.append(fc.{a})")
+		finance_collections.append(d_)
 	
 	tables = ""
 
 	if(deposit_collections):
-		context = {'headers':['bill no','Payment', 'Date' , 'Type']}
+		context = {'headers':['bill no','Date', "Account no.", 'Nomination no.' , 'first name' ,' last name' , 'amount' ,'Type']}
 		context['rows'] = deposit_collections 
 		context['title'] = 'Deposit Collections'
 		dp_table =  render(request,"employee/table.html",context)
 		tables += dp_table.content.decode()
 	
 	if(finance_collections):
-		context = {'headers':['bill no','Payment', 'Date' , 'Type']}
+		context = {'headers':['bill no','Date', "Account no.", 'Nomination no.' , 'first name' ,' last name' , 'amount' ,'Type']}
 		context['rows'] = finance_collections 
 		context['title'] = 'Finance Collections'
 		fc_table =  render(request,"employee/table.html",context)

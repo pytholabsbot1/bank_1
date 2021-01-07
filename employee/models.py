@@ -271,7 +271,7 @@ class deposits_table(models.Model):
     client_bank_account_number = models.CharField(max_length=500,null = True, blank =True)
     client_bank = models.ForeignKey(Bank_Choice, to_field='bank_choice',related_name='deposit_bank_choice',on_delete=models.CASCADE , blank = True,null = True)
     ifsc_code = models.CharField(max_length=20,null = True, blank =True)
-    account_opening_date = models.DateField(default=timezone.now)
+    account_opening_date = models.DateTimeField(default=timezone.now)
     account_opening_amount = models.FloatField(null=True, default= 0.0)
     
     scheme = models.ForeignKey(Scheme,null = True,on_delete=models.CASCADE)
@@ -377,7 +377,7 @@ class collection_finance(models.Model):
     finance = models.ForeignKey(approved_finance_table ,null = True, on_delete=models.CASCADE , blank = True)
 
     bill_no  = models.IntegerField(null = True , blank= False , default=get_finance_billnum)
-    loan_emi_received_date = models.DateField(default=timezone.now)
+    loan_emi_received_date = models.DateTimeField(default=timezone.now)
    
     agent_name = models.ForeignKey(employee_interview,null=True,on_delete=models.CASCADE , blank = True)
     person= models.ForeignKey(client,null=True,on_delete=models.CASCADE , blank = True)
@@ -407,7 +407,7 @@ class collection_deposit(models.Model):
     deposit = models.ForeignKey(deposits_table ,null = True, on_delete=models.CASCADE)
 
     bill_no = models.IntegerField(null = True , default=get_deposit_billnum)
-    payment_received_date = models.DateField(default = timezone.now ,null=True)
+    payment_received_date = models.DateTimeField(default = timezone.now ,null=True)
         
     agent_name =models.ForeignKey(employee_interview,null=True,on_delete=models.CASCADE)
     person= models.ForeignKey(client,null=True,on_delete=models.CASCADE , blank = True)
@@ -457,7 +457,7 @@ class withdrawl_entry(models.Model):
         ("withdraw",("withdraw"))
     )
     bill_no = models.IntegerField(default = get_withdrawl_billnum , unique=True)
-    amount_withdrawl_date = models.DateField(default = timezone.now)
+    amount_withdrawl_date = models.DateTimeField(default = timezone.now)
     
     category = models.CharField(max_length=100, choices=TYPE)
     society_account = models.ForeignKey(deposits_table,null=True,on_delete=models.CASCADE)
@@ -476,6 +476,9 @@ class withdrawl_entry(models.Model):
     cheque_no = models.CharField(max_length=200,null = True, blank =True )
     created_time = models.TimeField(default=timezone.now)
     # maturity_amount = models.FloatField(null=True,blank =True, default = 0)
+    
+    agent = models.ForeignKey(employee_interview,null=True,on_delete=models.SET_NULL)
+    
     def image_tag(self):
         print(self)
         return mark_safe('<img src="/media/%s" width="50" height="50" />' % (self.society_account.person.photograph))
@@ -560,7 +563,7 @@ class Voucher(models.Model):
     )
 
     voucher_number = models.CharField(max_length=9,unique=True)
-    date = models.DateField(default = timezone.now)
+    date = models.DateTimeField(default = timezone.now)
     
     db = models.BooleanField(default=True)
     custom_num = models.BooleanField(default=False)
@@ -767,7 +770,7 @@ class Cheque_details(models.Model):
     bank = models.ForeignKey(Bank_Choice, to_field='bank_choice',related_name='receript_bank_choice',on_delete=models.CASCADE,null = True)
     branch = models.ForeignKey(Branch_Choice, to_field='branch_choice',related_name='receipt_branch_choice',on_delete=models.CASCADE,null = True)
     cheque_number= models.CharField(max_length=20,null=False,blank =True)
-    cheque_date = models.DateField(null=False,blank=True)
+    cheque_date = models.DateTimeField(null=False,blank=True)
     voucher = models.ForeignKey(Voucher, on_delete=models.CASCADE,null = True)
     created_time = models.TimeField(default=timezone.now)
 
@@ -812,7 +815,7 @@ class VoucherHead(models.Model):
 #---cash collection by cashier
 class cash_collection(models.Model):
     bill_number = models.IntegerField(default = get_cashcol_billnum, null = True , unique=True)
-    date = models.DateField(default=timezone.now)
+    date = models.DateTimeField(default=timezone.now)
     
     employee = models.ForeignKey(employee_interview,null=True,blank=True,on_delete=models.CASCADE)
     
@@ -891,7 +894,7 @@ class UploadDocs(models.Model):
     ("Other",("Other")),
     ))
     type_other = models.CharField(max_length=100, null=True, blank=True)
-    date = models.DateField(default=timezone.now)
+    date = models.DateTimeField(default=timezone.now)
     created_time = models.TimeField(default=timezone.now)
 
     def clean(self):
@@ -926,9 +929,9 @@ class Documents(models.Model):
         ("Dispatched","Dispatched")
     ), default='Recieved')
 
-    Submit_date = models.DateField(default=timezone.now)
+    Submit_date = models.DateTimeField(default=timezone.now)
     remarks  = models.TextField(default="None")
-    created_time = models.DateField(default=timezone.now)
+    created_time = models.DateTimeField(default=timezone.now)
     
     cli = models.ForeignKey(finance_table, on_delete=models.CASCADE,null = True)
 

@@ -40,7 +40,7 @@ class ClientAdmin(AutoFillAgent):
     # Search Fields in list view
     search_fields = ('nomination_number','first_name','last_name','mobile_number_1','area',)
 
-    list_display = ('image_tag','entry_date',"created_time",'nomination_number','first_name','last_name','mobile_number_1','area')
+    list_display = ('image_tag','entry_date','nomination_number','branch','first_name','last_name','father_name','mobile_number_1','area')
 
 
     # Fields to be shown in forms
@@ -105,6 +105,19 @@ class EmployeeInterview(RedirectHome):
         image.save(obj.photograph.url[1:], "png")
 
         return HttpResponseRedirect('/bank')
+
+    def response_post_save_change(self, request, obj):
+        # Delete the user is status is false
+        if(not obj.status):         
+            try:
+                u = User.objects.get(username = obj.nomination_number)
+                u.delete()
+            except:
+                pass
+
+        return HttpResponseRedirect('/bank')
+
+    
 
     referal_fields = (('referal_name','referal_father'),('referal_mobile_number','referal_address'),('referal_photograph','referal_signature','ref_id_1','ref_id_2'),)
 
@@ -278,6 +291,17 @@ class DepositTable(RedirectHome , AutoFillAgent):
     def response_post_save_add(self, request, obj):
         obj.agent_name = employee_interview.objects.get(nomination_number=request.user.username)
         obj.save()
+
+        #Cretae collection for the opening amount
+        data = {'deposit' : obj,
+                'bill_no' : len(collection_deposit.objects.all())+1,
+                'agent_name' : obj.agent_name,
+                'person' : obj.person,
+                'payment_received' : obj.account_opening_amount,
+                'previous_balance' : 0,
+                'latest_intrest' : 0,
+                }  
+        collection_deposit(**data).save()
 
         if(obj.category.name=="FD"):
             return HttpResponseRedirect('/bank/transit/dpFD/'+str(obj.society_account_number))

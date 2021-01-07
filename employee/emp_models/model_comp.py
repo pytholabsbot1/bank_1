@@ -241,6 +241,11 @@ class Sub_Head(models.Model):
     def __str__(self):
         return self.value
 
+class Bank_Branch(models.Model):
+    name = models.CharField(max_length=100,unique=True) 
+    def __str__(self):
+        return self.name
+
 
 
 class Basic_Details(models.Model):
@@ -255,6 +260,7 @@ class Basic_Details(models.Model):
     #basic info
     entry_date = models.DateField(default=timezone.now)
     created_time = models.DateField(default=timezone.now)
+    branch = models.ForeignKey(Bank_Branch , null=True , on_delete=models.SET_NULL)
     # account holder info 
 
     first_name = models.CharField(max_length=100,null = True)

@@ -5,8 +5,9 @@
     {% if p_img %}
     <img src="{{ p_img }}" alt="" style="height: 100px;width: 100px;margin-left: 25px;"> {% endif %}
 
-    <div class="card-body"><h5 class="card-title">{{ title |safe  }}</h5>
-        
+    <div class="card-body">
+        <h5 class="card-title">{{ title |safe  }}</h5>
+        <hr>
         <table class="mb-0 table table-hover" id="report-table">
             <thead>
             <tr>
@@ -238,11 +239,45 @@
                 </tr>
                 {% endfor %}
 
-                
+                {% if report_total %}
+                <br>
+                <h4>Deposit Total : {{ report_total  }} </h4>
+                <br>
+                {% endif %}
         </tbody></table>
         <br><br>
-      
     </div>
+
+
+    <!-- Withdrawl Entries Part -->
+    {% if withdrawls %}
+    <hr>
+    <div class="card-body">
+       <h5 class="card-title"> Withdraws </h5>
+       <h4>Withdrawl Total : {{ withdrawl_total }} </h4>
+            <table class="mb-0 table table-hover" id="report-table">
+                <thead>
+                    <tr>
+                        {% for head in withdrawl_headers %}
+                            <th> {{ head }} </th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+               
+                <tbody>
+                    {% for withdraw in withdrawls %}
+                        <tr> 
+                            {% for w in withdraw %} 
+                               <td>{{ w }}</td> 
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>            
+    </div>
+    {% endif %}
+    <!-- Withdrawl Entries Part -->
+
+
     
 </div>
 

@@ -16,6 +16,7 @@ admin.site.register(client,ClientAdmin)                 # Database client model 
 admin.site.register(employee_interview,EmployeeInterview)
 admin.site.register(employee_joining,EmployeeJoining)                                           # deposit or take loan from organisation ( client creation form )
 admin.site.register(Balance) 
+admin.site.register(Bank_Branch) 
 admin.site.register(Admin_Details , AdminDetails_Ad)                
 admin.site.register(Bank_Choice)            # model for adding bank choices 
 admin.site.register(Branch_Choice)          # model for adding bank choices 

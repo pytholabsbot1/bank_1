@@ -1,0 +1,8 @@
+#cropper_modal .modal-dialog {
+    overflow-y: auto !important;
+    margin-bottom: 80px;
+}
+/* 
+body {
+    background-color: red;
+} */

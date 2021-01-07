@@ -93,6 +93,7 @@ def ClientCollection(request):
     from_date = request.POST.get("from_date")
     to_date = request.POST.get("to_date")
     search_val = request.POST.get("search_val")
+    acc_val = request.POST.get("account_val")
     all_ = request.POST.get("all_")
     audit = request.POST.get("audit") == "on"
 
@@ -100,23 +101,34 @@ def ClientCollection(request):
         #processing them into statements -for agentwise deposit collection
         if (all_):
             collections = collection_deposit.objects.all() 
+        elif(acc_val):
+            collections = collection_deposit.objects.filter(deposit__society_account_number = acc_val)
+        elif(search_val):
+            collections = client.objects.get(nomination_number = search_val).collection_deposit_set.all()
         else:
-            collections = client.objects.get(nomination_number = search_val).collection_deposit_set.all()       
+            return HttpResponse("Please Enter Details")
+
         filter_ = f".filter(payment_received_date__range=['{from_date}','{to_date}'])"                 
         display_fields = ('bill_no','deposit__society_account_number','person__first_name' , 'person__last_name' ,'person__area','payment_received_date','payment_received','deposit__category__name')
+        audit_fliter = 'deposit__db'
 
     else:
             #processing them into statements -for clientwise deposit collection
         if(all_):
             collections = collection_finance.objects.all()
-        else:
+        elif(acc_val):
+            collections = collection_finance.objects.filter(finance__finance__loan_account_number = acc_val)
+        elif(search_val):
             collections = client.objects.get(nomination_number = search_val).collection_finance_set.all()        
-        
+        else:
+            return HttpResponse("Please Enter Details")
+    
         filter_ = f".filter(loan_emi_received_date__range=['{from_date}','{to_date}'])" 
         display_fields = ('bill_no','finance__finance__loan_account_number','person__first_name', 'person__last_name' ,'person__area','loan_emi_received_date','loan_emi_received','penalty')
+        audit_fliter = 'finance__db'
 
     #if audit is true so show only audit
-    filter_ = filter_[:-1] + ', db=True )'if(audit) else filter_
+    filter_ = filter_[:-1] + f', {audit_fliter}=True )' if(audit) else filter_
 
     rows = eval(f"collections{filter_}.values_list{display_fields}")
 
@@ -154,6 +166,7 @@ def ledger(request):
     ##Loan and Soicety
     if(ledger_for == "Society"):  
         display_fields = ('person__nomination_number','society_account_number','account_opening_date','account_opening_amount','category__name','maturity_date' ,'maturity_amount','scheme__duration','scheme__duration_type' ) 
+        audit_fliter = 'deposit__db'
         if(search_val):
             collections = client.objects.get(nomination_number = search_val).deposits_table_set.all()      
             person_details = eval(f'client.objects.filter(nomination_number = search_val).values_list{person_fields}')[0]
@@ -164,7 +177,7 @@ def ledger(request):
 
         filter_ = f".filter(account_opening_date__range=['{from_date}','{to_date}'])"                 
         #if audit is true so show only audit
-        filter_ = filter_[:-1] + ', db=True )'if(audit) else filter_
+        filter_ = filter_[:-1] + f', {audit_fliter}=True )'if(audit) else filter_
 
         rows = eval(f"collections{filter_}.values_list{display_fields}")
         m = {}
@@ -183,6 +196,7 @@ def ledger(request):
     
     else:
         display_fields = ('finance__person__nomination_number','finance__loan_account_number','loan_start_date','total','finance__loan_type__name' ) 
+        audit_fliter = 'finance__db'
         if(search_val):
             collections = approved_finance_table.objects.filter(finance__person__nomination_number=search_val)       
             person_details = eval(f'client.objects.filter(nomination_number = search_val).values_list{person_fields}')[0]
@@ -193,7 +207,7 @@ def ledger(request):
 
         filter_ = f".filter(loan_start_date__range=['{from_date}','{to_date}'])"                 
         #if audit is true so show only audit
-        filter_ = filter_[:-1] + ', db=True )'if(audit) else filter_
+        filter_ = filter_[:-1] + f', {audit_fliter}=True )'if(audit) else filter_
 
         rows = eval(f"collections{filter_}.values_list{display_fields}")
         m = {}
@@ -655,6 +669,7 @@ def mycashreport(request):
     rows = []
     e = employee_interview.objects.get(nomination_number=request.user)
     cash_collections = cash_collection.objects.filter(date__range=[from_date ,to_date], employee=e)
+    report_total = 0
     for c in cash_collections:
         payment_string = ""
         if c.c_1:payment_string += "<li>C " + str(c.c_1) + " * 1 = " + str(c.c_1 * 1) + "</li>"
@@ -670,8 +685,24 @@ def mycashreport(request):
         if c.n_2000:payment_string += "<li>" + str(c.n_2000) + " * 2000 = " + str(c.n_2000 * 2000) + "</li>"
         payment_string = "<ul>" + payment_string + "</ul>"
         rows.append((c.date, "SELF", c.total_society_deposit, c.total_loan_deposit, c.tot_reciept, c.total_loan_deposit + c.total_society_deposit,"",payment_string))
+        report_total += c.total_loan_deposit + c.total_society_deposit
+     
+     # for withrawl entries
+    w_fields = ('bill_no' , 'amount_withdrawl_date','society_account__society_account_number' ,'amount_withdrawl' , 'available_amount' , 'category' ,)
+    w_set = e.withdrawl_entry_set
+    if(w_set):
+        w_total = sum([x[0] for x in w_set.values_list('amount_withdrawl')])
+        w_values = eval(f'w_set.values_list{w_fields}')
+    # acc.
+
+    
     context = {'headers':("Date","Employee" , "Society Total" , 'Loan Total' , "Reciepts", "Total", "Payment Details", "Currency Details")}
     context['rows'] = rows
+    context['report_total'] = report_total
+    context['withdrawls'] = w_values if(w_set) else 0
+    context['withdrawl_headers'] = w_fields if(w_set) else 0
+    context['withdrawl_total'] = w_total if(w_set) else 0
+            
     rendered_report =  render(request,"employee/table.html",context)
     context['table'] = rendered_report.content.decode('utf-8')
     context['heading'] = 'My cash submit report'
@@ -762,33 +793,61 @@ def client_report(request):
 
                 secured = acc.secure_key == key
 
-                display_fields = ('bill_no','loan_emi_received_date','loan_emi_received','penalty')       
+                display_fields = ('bill_no','loan_emi_received_date','loan_emi_received','penalty','agent_name__first_name')       
                 values = eval( f'acc.collection_finance_set.values_list{display_fields}')
 
-                head_fields = ('person__nomination_number','person__first_name','person__last_name','person__area','person__mobile_number_1','loan_start_date','loan_end_date')
+                head_fields = ('finance__person__nomination_number','finance__person__first_name','finance__person__last_name','finance__person__area','finance__person__mobile_number_1','loan_start_date','loan_end_date')
                 head = eval( f'approved_finance_table.objects.filter(finance__loan_account_number = acc_num).values_list{head_fields}')
                 
-                print(head)
-                meta_title = '<br>'.join([f'{el.replace("person__","").replace("_"," ")} : {head[0][i]}'  for i , el in enumerate(head_fields)])
+                report_total = sum([x[0] for x in values.values_list('loan_emi_received')])
 
+                print(head)
+                meta_title = '<br>'.join([f'{el.replace("finance__person__","").replace("_"," ")} : {head[0][i]}'  for i , el in enumerate(head_fields)])
+                
+                display_fields = ('bill_no','loan_emi_received_date','loan_emi_received','penalty','Agent Name')       
+
+                photo = acc.finance.person.photograph.url
+
+           
             else:
                 acc = deposits_table.objects.get(society_account_number = acc_num)
                 
                 secured = acc.secure_key == key
 
-                display_fields = ('bill_no','payment_received_date','payment_received')
+                display_fields = ('bill_no','payment_received_date','payment_received','agent_name__first_name')
                 values = eval( f'acc.collection_deposit_set.values_list{display_fields}')
+                
+                report_total = sum([x[0] for x in values.values_list('payment_received')])
 
                 head_fields = ('person__nomination_number','person__first_name','person__last_name','person__area','person__mobile_number_1','account_opening_date','category__name')
                 head = eval( f'deposits_table.objects.filter(society_account_number = acc_num).values_list{head_fields}')
                 
                 print(head)
                 meta_title = '<br>'.join([f'{el.replace("person__","").replace("_"," ")} : {head[0][i]}'  for i , el in enumerate(head_fields)])
+                display_fields = ['bill_no','Date','payment received','Agent Name']
+           
+                # for withrawl entries
+                w_fields = ('bill_no' , 'amount_withdrawl_date','society_account__society_account_number' ,'amount_withdrawl' , 'available_amount' , 'category' ,)
+                w_set = acc.withdrawl_entry_set
+                if(w_set):
+                    w_total = sum([x[0] for x in w_set.values_list('amount_withdrawl')])
+                    w_values = eval(f'w_set.values_list{w_fields}')
+                # acc.
+
+                photo = acc.person.photograph.url
 
             if(secured):
-                context = {'headers':display_fields}
+                context = {'headers': display_fields }
                 context['records'] = values
-                context['p_img'] = acc.person.photograph.url
+                context['report_total'] = report_total
+                
+                #if not loan so add withrawls
+                if("26" != acc_num[:2]):
+                    context['withdrawls'] = w_values if(w_set) else 0
+                    context['withdrawl_headers'] = w_fields if(w_set) else 0
+                    context['withdrawl_total'] = w_total if(w_set) else 0
+                
+                context['p_img'] = photo
                 context["off_explore"] = 1
                 
                 context['title'] = f''' 

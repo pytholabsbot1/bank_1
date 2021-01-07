@@ -109,7 +109,10 @@ def client_pdf(request,nom_num):
 	'page-size': 'A4',
 	'dpi': '300',
 	})
-	return HttpResponse(pdf, content_type='application/pdf')
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-Disposition'] = f'attachment; filename="{nom_num}.pdf"'
+	return response
+
 
 @login_required
 def document_pdf(request, nom_num):
@@ -125,7 +128,10 @@ def document_pdf(request, nom_num):
 	'page-size': 'A4',
 	'dpi': '300',
 	})
-	return HttpResponse(pdf, content_type='application/pdf')
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-Disposition'] = f'attachment; filename="{nom_num}.pdf"'
+	return response
+
 
 @login_required
 def collectionFinance_reciept(request, nom_num):
@@ -143,7 +149,10 @@ def collectionFinance_reciept(request, nom_num):
 	'page-size': 'A4',
 	'dpi': '300',
 	})
-	return HttpResponse(pdf, content_type='application/pdf')
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-Disposition'] = f'attachment; filename="{nom_num}.pdf"'
+	return response
+
 
 
 @login_required
@@ -182,7 +191,9 @@ def FD_pdf(request,dp_num):
 
 	print(context['num_wrd'])	
 
-	return HttpResponse(pdf, content_type='application/pdf')
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-Disposition'] = f'attachment; filename="{dp_num}.pdf"'
+	return response
 	# return render(request,'employee/reciepts/fd.html',context)
 
 
@@ -206,7 +217,9 @@ def id_card(request,nom_num):
 
 	
 	pdf = pdfkit.from_string(page, False , options={'orientation':'landscape', 'page-height':'216', 'page-width':'324'})
-	return HttpResponse(pdf, content_type='application/pdf')
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-Disposition'] = f'attachment; filename="{nom_num}.pdf"'
+	return response
 
 	# return HttpResponse(page)
 
@@ -226,7 +239,9 @@ def voucher_reciept(request,v_id):
 
 	
 	pdf = pdfkit.from_string(page, False , options={'orientation':'landscape', 'page-height':'216', 'page-width':'324'})
-	return HttpResponse(pdf, content_type='application/pdf')
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-Disposition'] = f'attachment; filename="{v_id}.pdf"'
+	return response
 
 	# return HttpResponse(page)
 
@@ -274,8 +289,9 @@ def deposit_pdf(request,nom_num):
 
 	pdf = pdfkit.from_string(page, False )
 
-	return HttpResponse(pdf, content_type='application/pdf')
-
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-Disposition'] = f'attachment; filename="{nom_num}.pdf"'
+	return response
 
 
 @login_required
@@ -308,7 +324,9 @@ def fc_pdf(request,fc_num):
 	page = page.content.decode('utf-8')
 
 	pdf = pdfkit.from_string(page, False )
-	return HttpResponse(pdf, content_type='application/pdf')
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-Disposition'] = f'attachment; filename="{fc_num}.pdf"'
+	return response
 
 
 
@@ -359,7 +377,9 @@ def pdf(request,nom_num):
 
 	print(page)
 	pdf = pdfkit.from_string(page, False , options={'orientation':'landscape'})
-	return HttpResponse(pdf, content_type='application/pdf')
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-Disposition'] = f'attachment; filename="{nom_num}.pdf"'
+	return response
 
 	# return render(request,'employee/reciepts/pdf.html',context)
 
@@ -388,7 +408,9 @@ def cash_coll(request , bill_num):
 	'page-size': 'A4',
 	'dpi': '300',
 	})
-	return HttpResponse(pdf, content_type='application/pdf')
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-Disposition'] = f'attachment; filename="{bill_num}.pdf"'
+	return response
 
 
 @login_required
@@ -414,7 +436,9 @@ def noc(request , fc_num):
 	'page-size': 'A4',
 	'dpi': '300',
 	})
-	return HttpResponse(pdf, content_type='application/pdf')
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-Disposition'] = f'attachment; filename="{fc_num}.pdf"'
+	return response
 
 
 
@@ -433,4 +457,6 @@ def withdrawl(request , num):
 	'page-size': 'A4',
 	'dpi': '300',
 	})
-	return HttpResponse(pdf, content_type='application/pdf')
+	response = HttpResponse(pdf, content_type='application/pdf')
+	response['Content-Disposition'] = f'attachment; filename="{num}.pdf"'
+	return response
